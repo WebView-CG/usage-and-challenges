@@ -1,5 +1,7 @@
 # Use case and Issue Template
 
+note: this is the template to submit a Github issue regarding the use case and issue of using WebView in native mobile  platforms.
+
 ## Submitter(s)
 
 ## Motivation
