@@ -6,3 +6,7 @@
 * Logistics: recurring calls, GitHub repository, document edition  -- 10min
 * Template to collect use cases & requirements, and one use case discussion (https://github.com/WebView-CG/usage-and-challenges/issues/3) -- 30min
 * AoB
+
+
+# First meeting minutes
+https://www.w3.org/2022/04/20-webview-minutes.html
