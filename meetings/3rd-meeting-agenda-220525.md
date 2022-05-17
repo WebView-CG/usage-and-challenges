@@ -1,3 +1,4 @@
 # Third meeting agenda (2022-05-25, 14:00 UTC)
 
-TBD, will sent out before the meeting.
+* Review and discuss use cases, https://github.com/WebView-CG/usage-and-challenges/issues?q=is%3Aissue+is%3Aopen+label%3A%22use+case%22
+* Review other issues (if we have time), https://github.com/WebView-CG/usage-and-challenges/issues
