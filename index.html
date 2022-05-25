@@ -12,7 +12,12 @@
       // All config options at https://respec.org/docs/
       var respecConfig = {
         specStatus: "CG-DRAFT",
-	editors: [],
+	editors: [{
+        name: "Qing An",
+        w3cid: "76701",
+        company: "Alibaba",
+        companyURL: "https://www.alibabagroup.com/en/global/home"
+      }],
         github: "WebView-CG/usage-and-challenges",
         xref: "web-platform",
         group: "cg/webview",
@@ -28,9 +33,89 @@
     </section>
     <section class="informative">
       <h2>Introduction</h2>
+	<p>The WebView Community Group aims to identify, understand and reduce the issues arising from the use of software components (typically referred as WebViews) that are used to render Web technology-based content outside of a Web browser (Native Apps, MiniApps, etc).</p>
+	<p>This document contains sections describing the use cases that were contributed by multiple authors. Since this document is a group note, additional use cases will be added in future revisions of this document.</p>
+
     </section>
     <section>
       <h2>Usage Scenarios</h2>
+      <section>
+        <h2>Load a WebView Page</h2>
+        <dl>
+            <dt>Submitter(s)</dt>
+            <dd>
+            Qing An, Alibaba
+            </dd>
+            
+            <dt>Motivation</dt>
+            <dd>
+            It is quite common to use WebView in Native App development, due to WebView’s benefit of cross-platform interoperability. But the page loading performance of WebView cannot satisfy Native App well, which means the loading of a WebView page is quite slower than loading a Native page.
+            <br>
+            <br>
+            The below is WebView page loading, it firstly shows the white screen.
+            
+            <figure>
+                <img alt="WebView page loading" src="./images/Load-WebView-Page.gif" width="800">
+                <figcaption>
+                  WebView page loading
+                </figcaption>
+            </figure>
+            
+            But for the Native page loading as shown below, it shows the skeleton immediately, which gives a better user experience compared with WebView.
+            
+            <figure>
+                <img alt="Native page loading" src="./images/Load-Native-Page.gif" width="800">
+                <figcaption>
+                  Native page loading
+                </figcaption>
+            </figure>
+            
+            Therefore, how to enhance the loading performance of WebView page needs to be addressed.
+
+            </dd>
+            
+            <dt>Stakeholders</dt>
+            <dd>
+            Stakeholders include:
+                <ul>
+                    <li>WebView provider: browsers, deciders on how to enhance WebView</li>
+                    <li>WebView user: Native App or MiniApp which rely on WebView to render pages</li>
+                    <li>End user: users of the Native App or MiniApp are indirectly using the pages and functions implemented by WebView</li>
+                </ul>
+            </dd>
+
+            <dt>Analysis</dt>
+            <dd>
+            The reason of long white screen is due to serial execution in loading a WebView page. The duration of white screen directly depends on the time cost from routing intercept to JS download & parse & exec as described in the following figure.
+            
+            <figure>
+                <img alt="Procedure of loading a WebView page" src="./images/Procedure-of-loading-a-webview-page.png" width="800">
+                <figcaption>
+                  Procedure of loading a WebView page
+                </figcaption>
+            </figure>
+            </dd>
+
+            <dt>Related W3C deliverables and/or work items</dt>
+            <dd>
+                <ul>
+                    <li><a href="https://www.w3.org/TR/resource-hints/">Resource Hints</a> defines the Prefetch on page resources</li>
+                    <li><a href="https://www.w3.org/TR/preload/ ">Preload</a> defines provides a declarative fetch primitive that initiates an early fetch and separates fetching from resource execution</li>
+                </ul> 
+            </dd>
+
+            <dt>How is the issue solved in the Browser, and what’s more is needed?</dt>
+            <dd>
+                <ul>
+                    <li>In the Browser: Prefetch, Preload and Next are used to pre-request resources (e.g. HTML, CSS, JavaScript, Img, etc.), but they are not supported or only partly supported by WebView.</li>
+                    <li>What’s more: how to pre-request the data (JSON, XML, etc.)
+                    <br>
+                    Take e-commerce App as example. WebView is used to render the page of product list and product info. So, a request to fetch the data is needed, and the data is described and transferred in the format of JSON or XML. Sometimes, user info is also carried in the request, to obtain the personalized product info. If the data can be pre-requested, the performance of loading a product page can be increased.
+                    </li>
+                </ul> 
+            </dd>
+        </dl>
+      </section>
     </section>
   </body>
 </html>
