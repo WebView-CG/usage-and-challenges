@@ -116,6 +116,70 @@
             </dd>
         </dl>
       </section>
+	    
+      <section>
+        <h2>Requests/responses sharing and proxy between Native and WebView</h2>
+        <dl>
+            <dt>Submitter(s)</dt>
+            <dd>
+            John Riviello
+            Jiasheng Wu, ByteDance
+            </dd>
+            
+            <dt>Motivation</dt>
+            <dd>
+            In a hybrid Native/WebView app, some Native app may load first-party website or third-party website through WebView. So, the Native app and the WebView may make the exact same calls in first-party business, or Native app handles the resource request on behalf of WebView and the corresponding response data returned to WebView can even be different with what is received by Native from the backend server. Also, not all requests want to be proxied through Native, WebView user want to proxy a small number of requests locally to load offline resources.
+            <br>
+            <br>
+            Some scenarios:
+                <ol>
+                    <li>Document access control: it is expected to manage the access control of Web access documents, allowing different users to access documents of different levels.</li>
+                    <li>Security firewall: In order to meet compliance requirements, network engineers want to audit requests within the app, and do not allow insecure requests to be sent on the web.</li>
+                    <li>Transcoder: In special scenarios, we may need to convert GIF images to JPEG images to send to reduce traffic, and may also need to translate documents to meet communication needs in different language scenarios. For example, it's hard for a user to communicating in English. When communicating, the user can type Chinese and it will be automatically translated into English.</li>
+                    <li>Anonymous: Some users may have higher requirements for the privacy of Web access, requiring that requests within the Web must remove identity features (such as client IP address, From header, Referer header, cookie, URI session ID), providing a high degree of privacy and anonymity.</li>
+                    <li>Reducing network requests: A hybrid app (in the sense that some screens are native code and other screens are Webviews) may make some of the same network requests (HTTP GET, POST, PUT, DELETE, or other network connections supported by webviews such as Web Sockets and WebRTC) in both the native screens and the webview screens. Being able to easily share those responses between native and web (while maintaining proper HTTP cache semantics) would reduce redundant requests, saving end-users bandwidth and reducing server traffic.</li>
+                </ol>
+                
+                <aside class="note">
+                    <p>
+                        The open questions on handling CORS (Cross-Origin Resource Sharing) & whether we should distinguish access between first-party and third-party content needs to be further considered.
+                    </p>
+                </aside>
+
+            </dd>
+            
+            <dt>Stakeholders</dt>
+            <dd>
+            Stakeholders include:
+                <ul>
+                    <li>WebView provider: Apple, Google, deciders on how to enhance sharing between WebView & Native</li>
+                    <li>WebView user: Native Business rely on WebView to send internal request, or load offline resource</li>
+                    <li>End user: users of the App save bandwidth by not having to make duplicate calls</li>
+                </ul>
+            </dd>
+
+            <dt>Analysis</dt>
+            <dd>
+            This is currently even possible in some way, but it is not a recommended pattern. So making this a standard that is easy to use for both Native and WebView developers would be a win for both groups.
+            
+            <br>
+            <br>
+            <a href="https://developer.android.com/reference/android/webkit/WebViewClient#shouldInterceptRequest(android.webkit.WebView,%20android.webkit.WebResourceRequest)">shouldInterceptRequest</a> in Android WebView provide develop with optional network interception capability.
+            
+            </dd>
+
+            <dt>Related W3C deliverables and/or work items</dt>
+            <dd>
+                N/A 
+            </dd>
+
+            <dt>How is the issue solved in the Browser, and what’s more is needed?</dt>
+            <dd>
+                N/A
+            </dd>
+        </dl>
+      </section>
+	    
     </section>
   </body>
 </html>
