@@ -181,6 +181,72 @@
         </dl>
       </section>
 	    
+      <section>
+        <h2>Render WebView Components and Native Components in same layer</h2>
+        <dl>
+            <dt>Submitter(s)</dt>
+            <dd>
+            Qing An, Alibaba
+            </dd>
+            
+            <dt>Motivation</dt>
+            <dd>
+           Hybrid Native/Webview App and MiniApp often use both WebView Components (text, label, button, image, etc.) and Native Components (such as video).
+                <ol>
+                    <li>Add a map: due to that developing a Web-based map component is difficult and not so good performance, developers may choose to use the Native map component. Usually, developers cover the WebView with the Native map component. But very often, the Native map will cover all the Web components rendered by WebView. And it is difficult to display one or several Web components on the Native map.</li>
+                    <li>Integrate a third-party content into WebView: from the business perspective, Native App needs to integrate third-party advertisements into the some App UI pages which are rendered by WebView. Many third-party advertisements are implemented based on Native components. How to integrate Native components with WebView smoothly?</li>
+                    <li>WebView interacts with Native component: developers have implemented a fancy UI page based on WebView, and then the WebView needs to use an extra Native component. How can the Native component interact with WebView smoothly? Like how to let Native component reuse the event handling and message interaction that have been implemented in WebView?</li>
+                </ol>
+                Unlike WebView Components, the Native Components are rendered by Native App instead of WebView. While Native Components can bring more features by complementing WebView Components, Native Components also bring issue for developers due to that Native rendering is independent of WebView rendering.
+                <br>
+                <br>
+                Therefore, Native Component cannot be controlled by z-index property, and cannot overlap with WebView components, as illustrated below.
+                
+                <figure>
+                    <img alt="Without-same-layer-rendering" src="./images/Without-same-layer-rendering.png" width="400">
+                    <figcaption>
+                        Render WebView Components and Native Components in separate layers
+                    </figcaption>
+                </figure>
+
+                But if the Native Components can be rendered in the same layer of WebView Component, AKA in the WebView Layer, developers can easily control the Native Components as well as the overlapping with other WebView Components, as illustrated below.
+                
+                <figure>
+                    <img alt="With-same-layer-rendering" src="./images/With-same-layer-rendering.png" width="400">
+                    <figcaption>
+                        Render WebView Components and Native Components in same layer
+                    </figcaption>
+                </figure>
+                
+            </dd>
+            
+            <dt>Stakeholders</dt>
+            <dd>
+                <ul>
+                    <li>WebView provider: Apple, Google, deciders on how to support the same layer rendering</li>
+                    <li>Native App or MiniApp developer: rely on the WebView</li>
+                    <li>End user: users of the Native App or MiniApp are indirectly using the pages and functions implemented by WebView.</li>
+                </ul>
+            </dd>
+
+            <dt>Analysis</dt>
+            <dd>
+            Currently, Native rendering is independent of WebView rendering. Therefore, Native Component cannot be controlled by `z-index` property, and cannot overlap with WebView components.
+            
+            </dd>
+
+            <dt>Related W3C deliverables and/or work items</dt>
+            <dd>
+                N/A 
+            </dd>
+
+            <dt>How is the issue solved in the Browser, and what’s more is needed?</dt>
+            <dd>
+                N/A
+            </dd>
+        </dl>
+      </section>
+	    
     </section>
   </body>
 </html>
