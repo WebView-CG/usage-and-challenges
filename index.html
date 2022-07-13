@@ -181,6 +181,66 @@
         </dl>
       </section>
 	    
+      <section>
+        <h2>The Origin in a WebView for locally hosted content</h2>
+        <dl>
+            <dt>Submitter(s)</dt>
+            <dd>
+            Niklas Merz, Apache Software Foundation
+            </dd>
+            
+            <dt>Motivation</dt>
+            <dd>
+            <a href="https://appfigures.com/top-sdks/development/all">Up to 30%</a> of apps found in the App stores (Apple and Google) are built with frameworks like <a href="https://cordova.apache.org">Apache Cordova</a> and <a href="https://capacitorjs.com/">CapacitorJS</a>. Those two frameworks use one big Webview for providing app developers a native wrapper and some plugins for their Web App. App developers build their Web application and put the HTML, CSS and JavaScript files in one folder. The framework then takes care of building a Native App project and bundling the Web code as a Native application ready to distribute via the App stores.
+            <br>
+            App developers usually only need knowledge in HTML, CSS and JavaScript and can call native OS features via plugins. The frameworks provide a bridge that makes these native features available as JavaScript functions inside the Webview. Because of this, the locally hosted Web application "should just work as published on the Web". Connections to the backend are usually done via fetch/XHR. Because the origin for the App code is different than the backend, there is always CORS involved.
+            <br>
+            Cordova used to host the bundled web content via `file://` URLs for a long time. In recent years many apps needed to switch to a "proper origin" mainly because of two reason:
+                <ol>
+                    <li>Web frameworks like React or Angular use their own router framework that relies on the origin and paths. The just don't work with file URLs.</li>
+                    <li>HTTP requests from file URLs have quirks in the CORS handling. If I recall correctly the webviews started to set the `Origin` HTTP header to `null` which made it difficult to make requests to backends and APIs.</li>
+                </ol>
+            Therefore Capacitor and Cordova changed the defaults to hosting the content on their "special origins" based on the fact that Android `https:://custom` and iOS `custom:\\custom` are using different approaches for their origins in WebViews.
+                <ul>
+                    <li>Android has <a href="https://developer.android.com/reference/androidx/webkit/WebViewAssetLoader">WebViewAssetLoader</a> that let's you create a "fake" domain to serve files to the webview. Therefore you can access local files via `https://myappcode/index.html` for example. WebViewAssetLoader only allows you to serve GET requests and access to the HTTP request is limited.</li>
+                    <li>iOS let's you implement a custom URL scheme like `myapp://mycode` and you can access the HTTP request and repsonse quite freely to implement custom logic around that. This is called  <a href="https://developer.apple.com/documentation/webkit/wkurlschemehandler">WKURLSchemehandler.</a></li>
+                </ul>
+            </dd>
+            
+            <dt>Stakeholders</dt>
+            <dd>
+                <ul>
+                    <li>WebView provider: Apple, Google, deciders on how to support having a standardized origin of web content hosted by the App for the Webview</li>
+                </ul>
+            </dd>
+
+            <dt>Analysis</dt>
+            <dd>
+            Apps built with this hybrid approach in mind are really dependent on making CORS work and HTTP requests possible on their own web content. This approach might benefit from a standardized way of providing web content from the app to the webview. This content could be considered secure.
+            <br>
+            Androids and iOS implementations provided solutions for many problems and solved some of those mentioned. But there still exist some issues. Some of them are:
+                <ul>
+                    <li>With some backends it might cause problems that you need to allow two different origins for CORS. Android only allows `http(s):` with WebViewAssetLoader and iOS only `custom:` etc with WKURLSchemeHandler. So you can't have one static allow setting for CORS but <b>need its to be dynamic or the backend needs to allow multiple origins.</b> (Some backends might not allow this.)</li>
+                    <li><b>Anti tracking features of Webviews might block authentication cookies.</b> Most Apps have gotten rid of cookies for good but sometimes cookies are still used. Especially iOS implemented a stronger Intelligent Tracking Prevention in Webviews that blocks many cookies on CORS requests. In some cases even <a href="https://bugs.webkit.org/show_bug.cgi?id=213510">legitimate authencation cookies to the apps backend can get blocked</a> and developers either need to switch to a different authentication method if possible or find workarounds.</li>
+                    <li><b>Androids and iOS implementations of this "custom scheme API" are quite different.</b> iOS WKURLSchemeHandler is quite powerful. As an app developer you can use the scheme handler for your custom scheme like `app://custom` in many different ways to intercept HTTP requests from the WebView and provide a custom response. From providing local files to proxying requests in the native layer everything is possible. Androids WebViewAssetLoader is more limited with only loading local files in mind. If you implement a custom domain you can mostly provide content to GET requests but your access to the request and response of the HTTP request is limited.</li>
+                    <li>The options to allow/deny traffic to Web content in in Webviews are not really standardized as well. iOS has App Bound Domains but this has it's own capabilities and limitations.</li>
+                </ul>
+                So, maybe a standardized APIs for Webviews to load content not found on the Web but provided to the Webview on a "proper origin" can solve this challenge.
+            
+            </dd>
+
+            <dt>Related W3C deliverables and/or work items</dt>
+            <dd>
+                N/A 
+            </dd>
+
+            <dt>How is the issue solved in the Browser, and what’s more is needed?</dt>
+            <dd>
+                N/A
+            </dd>
+        </dl>
+      </section>
+	    
     </section>
   </body>
 </html>
