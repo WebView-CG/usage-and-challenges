@@ -218,7 +218,7 @@
             <dd>
             Apps built with this hybrid approach in mind are really dependent on making CORS work and HTTP requests possible on their own web content. This approach might benefit from a standardized way of providing Web content from the app to the WebView. This content could be considered secure.
             <br>
-            Androids and iOS implementations provided solutions for many problems and solved some of those mentioned. But there still exist some issues. Some of them are:
+            The most promiment implementations in Android and iOS  provided solutions for many problems and solved some of those mentioned. But there still exist some issues. Some of them are:
                 <ul>
                     <li>With some backends it might cause problems that you need to allow two different origins for CORS. Android only allows `http(s):` with WebViewAssetLoader and iOS only `custom:` etc with WKURLSchemeHandler. So you can't have one static allow setting for CORS but <b>need its to be dynamic or the backend needs to allow multiple origins.</b> (Some backends might not allow this.)</li>
                     <li><b>Anti tracking features of Webviews might block authentication cookies.</b> Most Apps have gotten rid of cookies for good but sometimes cookies are still used. Especially iOS implemented a stronger Intelligent Tracking Prevention in Webviews that blocks many cookies on CORS requests. In some cases even <a href="https://bugs.webkit.org/show_bug.cgi?id=213510">legitimate authencation cookies to the apps backend can get blocked</a> and developers either need to switch to a different authentication method if possible or find workarounds.</li>
