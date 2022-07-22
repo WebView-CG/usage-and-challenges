@@ -198,7 +198,7 @@
             Cordova used to host the bundled Web content via `file://` URLs for a long time. In recent years many apps needed to switch to a "proper origin" mainly because of two reason:
                 <ol>
                     <li>Web frameworks like React or Angular use their own router framework that relies on the origin and paths. The just don't work with file URLs.</li>
-                    <li>HTTP requests from file URLs have quirks in the CORS handling. If I recall correctly the webviews started to set the `Origin` HTTP header to `null` which made it difficult to make requests to backends and APIs.</li>
+                    <li>HTTP requests from file URLs have quirks in the CORS handling. If I recall correctly the WebViews started to set the `Origin` HTTP header to `null` which made it difficult to make requests to backends and APIs.</li>
                 </ol>
             Therefore Capacitor and Cordova changed the defaults to hosting the content on their "special origins" based on the fact that Android `https:://custom` and iOS `custom:\\custom` are using different approaches for their origins in WebViews.
                 <ul>
