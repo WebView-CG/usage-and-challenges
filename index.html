@@ -202,7 +202,7 @@
                 </ol>
             Therefore Capacitor and Cordova changed the defaults to hosting the content on their "special origins" based on the fact that Android `https:://custom` and iOS `custom:\\custom` are using different approaches for their origins in WebViews.
                 <ul>
-                    <li>Android has <a href="https://developer.android.com/reference/androidx/webkit/WebViewAssetLoader">WebViewAssetLoader</a> that let's you create a "fake" domain to serve files to the webview. Therefore you can access local files via `https://myappcode/index.html` for example. WebViewAssetLoader only allows you to serve GET requests and access to the HTTP request is limited.</li>
+                    <li>Android has <a href="https://developer.android.com/reference/androidx/webkit/WebViewAssetLoader">WebViewAssetLoader</a> that let's you create a "fake" domain to serve files to the WebView. Therefore you can access local files via `https://myappcode/index.html` for example. WebViewAssetLoader only allows you to serve GET requests and access to the HTTP request is limited.</li>
                     <li>iOS let's you implement a custom URL scheme like `myapp://mycode` and you can access the HTTP request and repsonse quite freely to implement custom logic around that. This is called  <a href="https://developer.apple.com/documentation/webkit/wkurlschemehandler">WKURLSchemehandler.</a></li>
                 </ul>
             </dd>
