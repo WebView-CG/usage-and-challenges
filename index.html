@@ -195,7 +195,7 @@
             <br>
             App developers usually only need knowledge in HTML, CSS and JavaScript and can call native OS features via plugins. The frameworks provide a bridge that makes these native features available as JavaScript functions inside the WebView. Because of this, the locally hosted Web application "should just work as published on the Web". Connections to the backend are usually done via fetch/XHR. Because the origin for the app code is different than the backend, there is always CORS involved.
             <br>
-            Cordova used to host the bundled web content via `file://` URLs for a long time. In recent years many apps needed to switch to a "proper origin" mainly because of two reason:
+            Cordova used to host the bundled Web content via `file://` URLs for a long time. In recent years many apps needed to switch to a "proper origin" mainly because of two reason:
                 <ol>
                     <li>Web frameworks like React or Angular use their own router framework that relies on the origin and paths. The just don't work with file URLs.</li>
                     <li>HTTP requests from file URLs have quirks in the CORS handling. If I recall correctly the webviews started to set the `Origin` HTTP header to `null` which made it difficult to make requests to backends and APIs.</li>
