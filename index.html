@@ -245,6 +245,87 @@
         </dl>
       </section>
 	    
+      <section>
+        <h2>Inject custom JS scripts</h2>
+        <dl>
+            <dt>Submitter(s)</dt>
+            <dd>
+            Maxim Tsoy, Duck Duck Go
+            </dd>
+            
+            <dt>Motivation</dt>
+            <dd>
+            User scripts (aka content scripts) is a powerful tool that unlocks many possibilities such as: 
+                <ul>
+                    <li>content customization (e.g. applying custom CSS, adding UI elements)</li>
+                    <li>security and privacy protection (e.g. blocking harmful APIs, preventing data leakage and fingerprinting)</li>
+                    <li>enriching web app functionality (e.g. filling previously saved passwords, translating text to foreign language, polyfilling missing APIs)</li>
+                </ul>
+                Injected scripts can also be a workaround when another WebView feature is not available: for example, due to the lack of granular cookie control in native WebView APIs, one method is to <a href="https://github.com/duckduckgo/content-scope-scripts/blob/main/src/features/cookie.js">inject a script</a> to augment `document.cookie API`.
+            </dd>
+            
+            <dt>Stakeholders</dt>
+            <dd>
+                <ul>
+                    <li>WebView vendors: Google (WebView), Microsoft (WebView2), Apple (WKWebView)</li>
+                    <li>App developers that need customizations of the rendered content</li>
+                </ul>
+            </dd>
+
+            <dt>Analysis</dt>
+            <dd>
+            Web extensions have a similar concept of <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts">content scripts</a>, however the features provided by the native WebView implementaions are much less versatile and not standardized.
+            <br>
+            <br>
+            Most platforms implement a basic `evaluateJS(<string_payload>)` kind of method, which allows to execute arbitrary JS code in the page context. However, it is limited, and lacks some important features that would make developers live easier if they were cross-platform:
+                <ol>
+                    <li><b>Run scripts in isolated world</b>
+                    <br>
+                    It is common for web pages to change JS prototypes and global variables. This can easily affect the scripts injected by the native app. This can lead to security and privacy issues, and is very hard to prevent. <a href="https://developer.chrome.com/docs/extensions/mv3/content_scripts/#isolated_world">Isolated world</a> prevents these collisions by running the content script within its own JS environment, while still allowing it to access the DOM. Moreover, scripts in isolated world are not affected by CSP and other restrictions imposed on the page scripts.
+                    <aside class="note">
+                        <p>Isolated world is not a replacement to the main world</p>
+                        <p>Isolated world (called "content world" there) is available on <a href="https://developer.apple.com/documentation/webkit/wkcontentworld">Apple platforms</a>; Android and Windows WebViews can only execute code in the page context ("main" world)</p>
+                    </aside>
+                    </li>
+                    <li><b>Inject scripts in all iframes, including cross-origin and sandboxed ones</b>
+                    <br>
+                    This is currently a serious limitation on Android, which only allows executing in same-origin contexts. For DuckDuckGo browsers, this makes it very difficult to apply tracking protections, since trackers often operate in a third-party context.
+                    </li>
+                    <li><b>Inject scripts before all page scripts</b>
+                    <br>
+                    Web extensions have a <a href="https://developer.chrome.com/docs/extensions/mv3/content_scripts/#run_time">"run_at"</a> paramenter that controls when the script will be executed. This is crucial for any security and privacy customizations that need to apply protections before any malicious script can take effect. For example, <a href="https://github.com/duckduckgo/content-scope-scripts/blob/main/src/features/fingerprinting-screen-size.js">anti-fingerprinting protection</a> augments the APIs, but it only protects from scripts executed after it.
+                    <br>
+                    <a href="https://developer.apple.com/documentation/webkit/wkuserscriptinjectiontime">WKWebView</a> and <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.web.webview2.core.corewebview2.addscripttoexecuteondocumentcreatedasync?view=webview2-dotnet-1.0.1245.22">WebView2</a> can do this (although API approaches are different), but Android WebView doesn't allow it
+                    </li>
+                    <li><b>Secure messaging between the native code and injected scripts</b>
+                    <br>
+                    Content scripts often work in combination with the native components and so require communication. For example, in DuckDuckGo browsers scripts use this to read user configuration (which is managed by the Native App), and trigger native UI changes on page-generated events.
+                    <br>
+                    WKWebView provides a <a href="https://developer.apple.com/documentation/webkit/wkscriptmessagehandlerwithreply">convenient API</a> for passing async messages, but Android WebView and Windows WebView2 do not have an alternative. It is possible to achieve a one-way communication by exposing global JS callables, but without isolated world this is insecure, since page scripts would be able to use those globals too.
+                    </li>
+                    <li><b>Inject scripts in ServiceWorkers and (Shared) Web Workers</b>
+                    <br>
+                    Some scripts are designed to change the JS environment of the page scripts. For example, DuckDuckGo cookie protection <a href="https://github.com/duckduckgo/content-scope-scripts/blob/main/src/features/cookie.js">deliberately changes</a> the `document.cookie` API to protect against long-lived tracking cookies. However, there is currently no (straightforward) way to do this in Workers, which have access to powerful APIs as well (e.g. <a href="https://developer.mozilla.org/en-US/docs/Web/API/Cookie_Store_API">Cookie Store API</a>)
+                    <br>
+                    This is currently not possible on any platform
+                    </li>
+                </ol>
+            </dd>
+
+            <dt>Related W3C deliverables and/or work items</dt>
+            <dd>
+                <a href="https://github.com/w3c/webextensions">WebExtensions CG</a>
+            </dd>
+
+            <dt>How is the issue solved in the Browser, and what’s more is needed?</dt>
+            <dd>
+                In browsers, many of these issues are solved by Web Extension API. A lot of design patterns could be (and already are) borrowed from there. WKUserScript is clearly inspired by, and probably built upon the same technology.
+                <br>
+                However, just exposing the WebExtensions API might not always be the right solution: WebViews are embedded in Native Apps, which operate and protect under a different security and performance model. In general, WebView should probably give more raw control than WebExtensions API.
+            </dd>
+        </dl>
+      </section>    
+	    
     </section>
   </body>
 </html>
