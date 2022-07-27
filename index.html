@@ -245,6 +245,69 @@
         </dl>
       </section>
 	    
+      <section>
+        <h2>Control API permissions</h2>
+        <dl>
+            <dt>Submitter(s)</dt>
+            <dd>
+            Maxim Tsoy, Duck Duck Go
+            </dd>
+            
+            <dt>Motivation</dt>
+            <dd>
+            In apps that can load arbitrary web apps, such as WebView-powered browsers, it is desirable to give users control over website permissions via custom native UI. For example, a browser can prompt a user to allow a web app to access the camera, and then show an indicator while it's being used. To allow browsers to manage permissions, we need WebView APIs to: 
+                <ul>
+                    <li>List what permissions have been set for a given site (allow/deny/query)</li>
+                    <li>Programmatically change and reset them</li>
+                    <li>Receive events when a permission is requested or used</li>
+                </ul>
+                Some examples of permissions include:
+                <ul>
+                    <li>camera / microphone</li>
+                    <li>geolocation</li>
+                    <li>screen capture</li>
+                    <li>other permissions managed with <a href="https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API">Permissions API</a></li>
+                </ul>
+            </dd>
+            
+            <dt>Stakeholders</dt>
+            <dd>
+                <ul>
+                    <li>WebView vendors (Google, Microsoft, Apple)</li>
+                    <li>Browser vendors (e.g. DuckDuckGo)</li>
+                </ul>
+            </dd>
+
+            <dt>Analysis</dt>
+            <dd>
+           There's currently no cross-platform approach and support. Most WebViews provide events / APIs for specific permissions, but the feature parity could be better.
+            <br>
+            Some specific examples of limitations:
+                <ul>
+                    <li>Webkit has ways to control microphone and camera, but doesn't support Geolocation</li>
+                    <li>Microsoft's WebView2 support is limited:
+                        <ul>
+                            <li><a href="https://github.com/MicrosoftEdge/WebView2Feedback/issues/2427">Feature request: Permissions API</a></li>
+                            <li><a href="https://github.com/MicrosoftEdge/WebView2Feedback/issues/2428">Feature request: Device or permission "in use" event</a></li>
+                            <li><a href="https://github.com/MicrosoftEdge/WebView2Feedback/issues/2442">Feature request: API for screen sharing</a></li>
+                        </ul>
+                    </li>
+                    <li>Android WebView could use some WebRTC-related events: <a href="https://github.com/duckduckgo/Android/issues/429">WebRTC IP leak</a></li>
+                </ul>
+            </dd>
+
+            <dt>Related W3C deliverables and/or work items</dt>
+            <dd>
+                <a href="https://github.com/w3c/permissions/">Permissions API</a>
+            </dd>
+
+            <dt>How is the issue solved in the Browser, and what’s more is needed?</dt>
+            <dd>
+                Non-webview Browsers have implement this using internal APIs.
+            </dd>
+        </dl>
+      </section>	
+	    
     </section>
   </body>
 </html>
