@@ -245,8 +245,14 @@
         </dl>
       </section>
 	    
+
+	    
+      <section>
+        <h2>Control API permissions</h2>
+
       <section>
         <h2>Inject custom JS scripts</h2>
+
         <dl>
             <dt>Submitter(s)</dt>
             <dd>
@@ -255,6 +261,21 @@
             
             <dt>Motivation</dt>
             <dd>
+
+            In apps that can load arbitrary web apps, such as WebView-powered browsers, it is desirable to give users control over website permissions via custom native UI. For example, a browser can prompt a user to allow a web app to access the camera, and then show an indicator while it's being used. To allow browsers to manage permissions, we need WebView APIs to: 
+                <ul>
+                    <li>List what permissions have been set for a given site (allow/deny/query)</li>
+                    <li>Programmatically change and reset them</li>
+                    <li>Receive events when a permission is requested or used</li>
+                </ul>
+                Some examples of permissions include:
+                <ul>
+                    <li>camera / microphone</li>
+                    <li>geolocation</li>
+                    <li>screen capture</li>
+                    <li>other permissions managed with <a href="https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API">Permissions API</a></li>
+                </ul>
+
             User scripts (aka content scripts) is a powerful tool that unlocks many possibilities such as: 
                 <ul>
                     <li>content customization (e.g. applying custom CSS, adding UI elements)</li>
@@ -262,18 +283,40 @@
                     <li>enriching web app functionality (e.g. filling previously saved passwords, translating text to foreign language, polyfilling missing APIs)</li>
                 </ul>
                 Injected scripts can also be a workaround when another WebView feature is not available: for example, due to the lack of granular cookie control in native WebView APIs, one method is to <a href="https://github.com/duckduckgo/content-scope-scripts/blob/main/src/features/cookie.js">inject a script</a> to augment `document.cookie API`.
+
             </dd>
             
             <dt>Stakeholders</dt>
             <dd>
                 <ul>
+
+                    <li>WebView vendors (Google, Microsoft, Apple)</li>
+                    <li>Browser vendors (e.g. DuckDuckGo)</li>
+
                     <li>WebView vendors: Google (WebView), Microsoft (WebView2), Apple (WKWebView)</li>
                     <li>App developers that need customizations of the rendered content</li>
+
                 </ul>
             </dd>
 
             <dt>Analysis</dt>
             <dd>
+
+           There's currently no cross-platform approach and support. Most WebViews provide events / APIs for specific permissions, but the feature parity could be better.
+            <br>
+            Some specific examples of limitations:
+                <ul>
+                    <li>Webkit has ways to control microphone and camera, but doesn't support Geolocation</li>
+                    <li>Microsoft's WebView2 support is limited:
+                        <ul>
+                            <li><a href="https://github.com/MicrosoftEdge/WebView2Feedback/issues/2427">Feature request: Permissions API</a></li>
+                            <li><a href="https://github.com/MicrosoftEdge/WebView2Feedback/issues/2428">Feature request: Device or permission "in use" event</a></li>
+                            <li><a href="https://github.com/MicrosoftEdge/WebView2Feedback/issues/2442">Feature request: API for screen sharing</a></li>
+                        </ul>
+                    </li>
+                    <li>Android WebView could use some WebRTC-related events: <a href="https://github.com/duckduckgo/Android/issues/429">WebRTC IP leak</a></li>
+                </ul>
+
             Web extensions have a similar concept of <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts">content scripts</a>, however the features provided by the native WebView implementaions are much less versatile and not standardized.
             <br>
             <br>
@@ -310,21 +353,33 @@
                     This is currently not possible on any platform
                     </li>
                 </ol>
+
             </dd>
 
             <dt>Related W3C deliverables and/or work items</dt>
             <dd>
+
+                <a href="https://github.com/w3c/permissions/">Permissions API</a>
+
                 <a href="https://github.com/w3c/webextensions">WebExtensions CG</a>
+
             </dd>
 
             <dt>How is the issue solved in the Browser, and what’s more is needed?</dt>
             <dd>
+
+                Non-webview Browsers have implement this using internal APIs.
+            </dd>
+        </dl>
+      </section>	
+
                 In browsers, many of these issues are solved by Web Extension API. A lot of design patterns could be (and already are) borrowed from there. WKUserScript is clearly inspired by, and probably built upon the same technology.
                 <br>
                 However, just exposing the WebExtensions API might not always be the right solution: WebViews are embedded in Native Apps, which operate and protect under a different security and performance model. In general, WebView should probably give more raw control than WebExtensions API.
             </dd>
         </dl>
       </section>    
+
 	    
     </section>
   </body>
