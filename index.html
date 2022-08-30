@@ -393,9 +393,51 @@
                 Non-webview Browsers have implement this using internal APIs.
             </dd>
         </dl>
+      </section>
+      
+      <section>
+        <h2>Manage web storage and cookies</h2>
+        <dl>
+            <dt>Submitter(s)</dt>
+            <dd>
+            Maxim Tsoy, Duck Duck Go
+            </dd>
+            
+            <dt>Motivation</dt>
+            <dd>
+            Apps loading 3rd-party web content in WebViews may need more granular control over stored data. For example, DuckDuckGo browsers need this for the Fireproof feature, which allows to make exceptions to the cookie/storage removal.
+            </dd>
+            
+            <dt>Stakeholders</dt>
+            <dd>
+                <ul>
+                    <li>Browsers based on WebView</li>
+                    <li>WebView vendors</li>
+                </ul>
+            </dd>
+
+            <dt>Analysis</dt>
+            <dd>
+                <ul>
+                    <li>Webkit provides APIs to retrieve cookies and local/sessionStorage as opaque tokens that can be filtered by hostname. This allows selective removal, although it requires some extra code and workarounds to prevent timing issues (removal is asynchronous).</li>
+                    <li>In Webkit, storage is shared between all WKWebView instances, unless it's "non persistent" (in memory), which is not ideal for building web browsers.</li>
+                    <li>In Android WebView, it is not possible to inspect cookie scopes. You can retrieve cookie names and values, but without knowing other attributes it is impossible to override them properly.</li>
+                    <li>Android WebView does not provide APIs to manage localStorage/sessionStorage.</li>
+                </ul>
+            </dd>
+
+            <dt>Related W3C deliverables and/or work items</dt>
+            <dd>
+                N/A
+            </dd>
+
+            <dt>How is the issue solved in the Browser, and what’s more is needed?</dt>
+            <dd>
+                Browsers manage storage using APIs of a specific rendering engine.
+            </dd>
+        </dl>
       </section>    
 
-	    
     </section>
   </body>
 </html>
