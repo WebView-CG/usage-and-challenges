@@ -436,8 +436,125 @@
                 Browsers manage storage using APIs of a specific rendering engine.
             </dd>
         </dl>
+      </section> 
+      
+      <section>
+        <h2>Define different types of WebViews</h2>
+        <dl>
+            <dt>Submitter(s)</dt>
+            <dd>
+            Niklas Merz, Apache
+            </dd>
+            
+            <dt>Motivation</dt>
+            <dd>
+            As more and more use cases are discussed, it might be helpful to define and name the different uses of WebViews. WebViews can be used in many different ways and some of them are vastly different in terms of privacy and security implications. It could be a good idea to separate them into different categories to discuss them better.
+            </dd>
+            
+            <dt>Stakeholders</dt>
+            <dd>
+                <ul>
+                    <li>Browsers vendors</li>
+                    <li>App developers</li>
+                </ul>
+            </dd>
+
+            <dt>Analysis</dt>
+            <dd>
+                We can already see these different categories of WebViews with the APIs available on the two big mobile platforms. Android offers a powerful WebView API and <a href="https://developer.chrome.com/blog/custom-tabs-android-11/">Chrome Custom Tabs</a>. iOS has WKWebView for a rich WebView API and <a href="https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller">SFSafariViewController</a> for a more browser-like experience embedded in native Apps.
+                <br>
+                The WebView APIs offer powerful features for example injecting JavaScript or other interactions with the pages loaded into the WebView. These features require the designers of the WebView APIs and App developers to think a lot about the security and privacy implications of their design choices. WebViews that allow the user to navigate the Web freely need to be much more secure and restricted than WebViews that just allow code under control of the App developers.
+                <br>
+                WebViews are used a lot to build the UI or core features of Apps. These Apps could benefit from more control over the native parts of the App or vice versa the native code might want to have more control over the Web content.
+                <br>
+                The distinction between browser-like WebViews and full WebViews embedded into Apps is the most obvious one but there are many more like we see with ePub and <a href="https://www.w3.org/TR/mini-app-white-paper/">MiniApps</a>.
+                <br>
+                If there are different types of WebViews with different use cases and feature sets App developers could benefit from more freedom or security and privacy. Browser vendors could roll out powerful features for developers of Apps built around WebViews but still keep the browsers and browser-like WebViews secure.
+            </dd>
+
+            <dt>Related W3C deliverables and/or work items</dt>
+            <dd>
+                N/A
+            </dd>
+
+            <dt>How is the issue solved in the Browser, and what’s more is needed?</dt>
+            <dd>
+                WebViews and browsers currently always have the same features and restrictions. Different WebView implementations share different APIs to interact with the WebView content.
+            </dd>
+        </dl>
       </section>    
 
+    </section>
+    
+    <section class="appendix">
+      <h2>Types of WebViews</h2>
+        <table class="data">
+            <thead>
+            <tr>
+                <th>WebView Type
+                <th>Name
+                <th>Platforms
+                <th>Description
+                <th>Features
+                <th>Limitations
+                <th>UX flexibility
+                <th>Usage Example
+            <tbody>
+                <tr>
+                    <td>Full-fledged WebViews
+                    <td>Android Webview
+                    <td>Android
+                    <td>Default WebView implementation on Android
+                    <td>Rich API with JS and CSS interaction, Tie WebView and native APIs together
+                    <td>Features equal to current Chrime but some Web APIs are not supported
+                    <td>Allows you to mix native content with the WebView and to resize it
+                    <td>Hybrid Frameworks (Cordova, Capacitor)
+                <tr>
+                    <td>WebViews for a browser-like experience in apps
+                    <td>Custom Tabs
+                    <td>Android
+                    <td>API for opening browser-like WebViews on Android
+                    <td>Browser navigation and conveniance features like password fill
+                    <td>App has no access to Web content
+                    <td>Covers the entire application with some minimal top bar customization
+                    <td>Link preview in social media Apps
+                <tr>
+                    <td>WebViews for a browser-like experience in apps
+                    <td>SFSafariViewController
+                    <td>iOS, iPadOS
+                    <td>API for opening browser-like WebViews on iOS
+                    <td>Browser navigation and conveniance features like password fill
+                    <td>App has no access to Web content
+                    <td>Covers the entire application with some minimal top bar customization
+                    <td>Link preview in social media apps
+                <tr>
+                    <td>
+                    <td>UIWebView (deprecated)
+                    <td>iOS, iPadOS, macOS
+                    <td>Soon-to-be-removed WebView API of iOS
+                    <td>Rich API with JS and CSS interaction, Tie WebView and native APIs together
+                    <td>Some current Web standards not implemented. Performance and security wise inferior to WKWebView, deprecated
+                    <td>Allows you to mix native content with the WebView and to resize it
+                    <td>Hybrid Frameworks (Cordova, Capacitor)
+                <tr>
+                    <td>Full-fledged WebViews
+                    <td>WKWebView
+                    <td>iOS, iPadOS, macOS
+                    <td>Default WebView implementation on iOS
+                    <td>Rich API with JS and CSS interaction, Tie WebView and native APIs together                    <td>Features similar to current Safari but some Web APIs are not supported
+                    <td>Allows you to mix native content with the WebView and to resize it
+                    <td>Hybrid Frameworks (Cordova, Capacitor)
+                <tr>
+                    <td>Full-fledged WebViews
+                    <td>WebView2
+                    <td>Windows
+                    <td>Default WebView implementation on Windows
+                    <td>Rich API with JS and CSS interaction
+                    <td>
+                    <td>
+                    <td>
+            </table>
+      
     </section>
   </body>
 </html>
