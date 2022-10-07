@@ -12,7 +12,7 @@
       // All config options at https://respec.org/docs/
       var respecConfig = {
         specStatus: "CG-DRAFT",
-	editors: [{
+    editors: [{
         name: "Qing An",
         w3cid: "76701",
         company: "Alibaba",
@@ -37,12 +37,155 @@
     </section>
     <section class="informative">
       <h2>Introduction</h2>
-	<p>The WebView Community Group aims to identify, understand and reduce the issues arising from the use of software components (typically referred as WebViews) that are used to render Web technology-based content outside of a Web browser (Native Apps, MiniApps, etc).</p>
-	<p>This document contains sections describing the use cases that were contributed by multiple authors. Since this document is a group note, additional use cases will be added in future revisions of this document.</p>
-
+      <p>The WebView Community Group aims to identify, understand and reduce the issues arising from the use of software components (typically referred as WebViews) that are used to render Web technology-based content outside of a Web browser (Native Apps, MiniApps, etc).</p>
+      <p>This document contains sections describing the use cases that were contributed by multiple authors. Since this document is a group note, additional use cases will be added in future revisions of this document.</p>
     </section>
-    <section>
-      <h2>Usage Scenarios</h2>
+
+    <section class="informative">
+      <h2>Types of WebViews</h2>
+      <p>WebViews can differ based on the following properties</p>
+      <p>
+        <ul>
+          <li><em>UX flexibility</em>: Whether the web content can be embedded within the native application</li>
+          <li><em>Access to web content</em>: Whether the native application has the ability to read or modify the web content</li>
+          <li><em>State sharing</em>: Whether the WebView shares state with the browser or is completely isolated</li>
+        </ul>
+      </p>
+      <p>However, in practice, WebViews are classified into one of two categories with fixed properties</p>
+      <dl>
+        <dt>browser-like WebViews</dt>
+        <dd>These are more straightforward WebViews with a simpler API surface mostly related to loading the web page. They generally span the entire application, do not provide access to the web content, and share state with the browser.</dd>
+        <dt>fully-fledged WebViews</dt>
+        <dd>These WebViews are used for creating richer experiences by utilizing powerful integration features. They have full UX flexibility when integrated within an application, provide the ability to access the web content (communication between the native and web), and are completely isolated from the system browsers.</dd>
+      </dl>
+    </section>
+
+    <section class="informative">
+      <h2>Implementations</h2>
+      <p>The following table contains different WebView implementations with their different considerations</p>
+      <table class="data">
+        <thead>
+          <tr>
+            <th>WebView Type</th>
+            <th>Name</th>
+            <th>Platforms</th>
+            <th>Description</th>
+            <th>Features</th>
+            <th>Limitations</th>
+            <th>UX flexibility</th>
+            <th>Usage Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Full-fledged WebViews</td>
+            <td>Android Webview</td>
+            <td>Android</td>
+            <td>Default WebView implementation on Android</td>
+            <td>Rich API with JS and CSS interaction, Tie WebView and native APIs together</td>
+            <td>Features equal to current Chrime but some Web APIs are not supported</td>
+            <td>Allows you to mix native content with the WebView and to resize it</td>
+            <td>Hybrid Frameworks (Cordova, Capacitor)</td>
+          </tr>
+          <tr>
+            <td>WebViews for a browser-like experience in apps</td>
+            <td>Custom Tabs</td>
+            <td>Android</td>
+            <td>API for opening browser-like WebViews on Android</td>
+            <td>Browser navigation and conveniance features like password fill</td>
+            <td>App has no access to Web content</td>
+            <td>Covers the entire application with some minimal top bar customization</td>
+            <td>Link preview in social media Apps</td>
+          </tr>
+          <tr>
+            <td>WebViews for a browser-like experience in apps</td>
+            <td>SFSafariViewController</td>
+            <td>iOS, iPadOS</td>
+            <td>API for opening browser-like WebViews on iOS</td>
+            <td>Browser navigation and conveniance features like password fill</td>
+            <td>App has no access to Web content</td>
+            <td>Covers the entire application with some minimal top bar customization</td>
+            <td>Link preview in social media apps</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>UIWebView (deprecated)</td>
+            <td>iOS, iPadOS, macOS</td>
+            <td>Soon-to-be-removed WebView API of iOS</td>
+            <td>Rich API with JS and CSS interaction, Tie WebView and native APIs together</td>
+            <td>Some current Web standards not implemented. Performance and security wise inferior to WKWebView, deprecated</td>
+            <td>Allows you to mix native content with the WebView and to resize it</td>
+            <td>Hybrid Frameworks (Cordova, Capacitor)</td>
+          </tr>
+          <tr>
+            <td>Full-fledged WebViews</td>
+            <td>WKWebView</td>
+            <td>iOS, iPadOS, macOS</td>
+            <td>Default WebView implementation on iOS</td>
+            <td>Rich API with JS and CSS interaction, Tie WebView and native APIs together</td>
+            <td>Features similar to current Safari but some Web APIs are not supported</td>
+            <td>Allows you to mix native content with the WebView and to resize it</td>
+            <td>Hybrid Frameworks (Cordova, Capacitor)</td>
+          </tr>
+          <tr>
+            <td>Full-fledged WebViews</td>
+            <td>WebView2</td>
+            <td>Windows</td>
+            <td>Default WebView implementation on Windows</td>
+            <td>Rich API with JS and CSS interaction</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <aside class="warning">
+        <p>This list of WebView implementations is not comprehensive, and is based on the information provided in <a href="https://github.com/WebView-CG/usage-and-challenges/issues/19">#19</a></p>
+      </aside>
+
+      <aside class="note">
+        <p>TODO: Add column about state sharing</p>
+      </aside>
+    </section>
+
+    <section class="informative">
+      <h2>Usages</h2>
+      <dl>
+        <dt>Hybrid apps</dt>
+        <dd>
+          <p>Hybrid apps combine elements of native applications and the web.</p>
+          <p>Web apps are an example of this, where the content is displayed using web technologies. This provides developers a cross-platform way of building an application. For native capabilities that are not available in the Web Platform, <em>fully-fledged</em> WebViews can be used to achieve parity via a native/web communication channel (web content access).</p>
+          <p>Another example is in-app browsers (IABs), which is a pattern of handling web page links within the application.</p>
+        </dd>
+        <dt>Browsers</dt>
+        <dd>WebViews can enable building browsers more easily, since they provide the capabilties of a rendering engine. With <em>fully-fledged</em> WebViews, the browsers can provide more customizable experiences (e.g. privacy-focused browsers) by modifying the web content.</dd>
+        <dt>Mini apps & super apps</dt>
+        <dd>
+          <aside class="note">
+            <p>TODO: Fill this after <a href="https://github.com/WebView-CG/usage-and-challenges/issues/34">#34</a> is resolved</p>
+          </aside>
+        </dd>
+      </dl>
+    </section>
+
+    <section class="informative">
+      <h2>Limitations & Challenges</h2>
+      <p>Individual limitations and challenges can be found in <a href="#scenarios"></a>. The following themes have emerged</p>
+      <dl>
+        <dt>Performance</dt>
+        <dd>Responsiveness is a critical requirement for applications. There are multiple opportunities to improve WebView performance, such as for intialization and page loads. </dd>
+        <dt>Inconsistencies</dt>
+        <dd>Behavioural inconsistencies across different WebViews diminish the interoperability of the web, since web experiences will have to be special-cased against the WebView.</dd>
+        <dt>Control</dt>
+        <dd>Especially for <em>fully-fledged</em> WebViews, some user journeys are unachievable without additional control over the web content and rendering engine.</dd>
+        <dt>Security and Privacy</dt>
+        <dd><em>fully-fledged</em> WebViews provide some powerful APIs that allow native apps access to the web content, unrestricted by web security boundaries. This unlocks powerful integration features, however it can also be used for malicious purposes such as tracking and phishing.</dd>
+      </dl>
+    </section>
+
+    <section class="appendix">
+      <h2>Scenarios</h2>
       <section>
         <h2>Load a WebView Page</h2>
         <dl>
@@ -50,34 +193,34 @@
             <dd>
             Qing An, Alibaba
             </dd>
-            
+
             <dt>Motivation</dt>
             <dd>
             It is quite common to use WebView in Native App development, due to WebView’s benefit of cross-platform interoperability. But the page loading performance of WebView cannot satisfy Native App well, which means the loading of a WebView page is quite slower than loading a Native page.
             <br>
             <br>
             The below is WebView page loading, it firstly shows the white screen.
-            
+
             <figure>
                 <img alt="WebView page loading" src="./images/Load-WebView-Page.gif" width="400">
                 <figcaption>
                   WebView page loading
                 </figcaption>
             </figure>
-            
+
             But for the Native page loading as shown below, it shows the skeleton immediately, which gives a better user experience compared with WebView.
-            
+
             <figure>
                 <img alt="Native page loading" src="./images/Load-Native-Page.gif" width="400">
                 <figcaption>
                   Native page loading
                 </figcaption>
             </figure>
-            
+
             Therefore, how to enhance the loading performance of WebView page needs to be addressed.
 
             </dd>
-            
+
             <dt>Stakeholders</dt>
             <dd>
                 <ul>
@@ -90,7 +233,7 @@
             <dt>Analysis</dt>
             <dd>
             The reason of long white screen is due to serial execution in loading a WebView page. The duration of white screen directly depends on the time cost from routing intercept to JS download & parse & exec as described in the following figure.
-            
+
             <figure>
                 <img alt="Procedure of loading a WebView page" src="./images/Procedure-of-loading-a-webview-page.png" width="800">
                 <figcaption>
@@ -104,7 +247,7 @@
                 <ul>
                     <li><a href="https://www.w3.org/TR/resource-hints/">Resource Hints</a> defines the Prefetch on page resources</li>
                     <li><a href="https://www.w3.org/TR/preload/ ">Preload</a> defines provides a declarative fetch primitive that initiates an early fetch and separates fetching from resource execution</li>
-                </ul> 
+                </ul>
             </dd>
 
             <dt>How is the issue solved in the Browser, and what’s more is needed?</dt>
@@ -115,11 +258,11 @@
                     <br>
                     Take e-commerce App as example. WebView is used to render the page of product list and product info. So, a request to fetch the data is needed, and the data is described and transferred in the format of JSON or XML. Sometimes, user info is also carried in the request, to obtain the personalized product info. If the data can be pre-requested, the performance of loading a product page can be increased.
                     </li>
-                </ul> 
+                </ul>
             </dd>
         </dl>
       </section>
-	    
+
       <section>
         <h2>Requests/responses sharing and proxy between Native and WebView</h2>
         <dl>
@@ -129,7 +272,7 @@
             <br>
             Jiasheng Wu, ByteDance
             </dd>
-            
+
             <dt>Motivation</dt>
             <dd>
             In a hybrid Native/WebView app, some Native app may load first-party website or third-party website through WebView. So, the Native app and the WebView may make the exact same calls in first-party business, or Native app handles the resource request on behalf of WebView and the corresponding response data returned to WebView can even be different with what is received by Native from the backend server. Also, not all requests want to be proxied through Native, WebView user want to proxy a small number of requests locally to load offline resources.
@@ -143,7 +286,7 @@
                     <li>Anonymous: Some users may have higher requirements for the privacy of Web access, requiring that requests within the Web must remove identity features (such as client IP address, From header, Referer header, cookie, URI session ID), providing a high degree of privacy and anonymity.</li>
                     <li>Reducing network requests: A hybrid app (in the sense that some screens are native code and other screens are Webviews) may make some of the same network requests (HTTP GET, POST, PUT, DELETE, or other network connections supported by webviews such as Web Sockets and WebRTC) in both the native screens and the webview screens. Being able to easily share those responses between native and web (while maintaining proper HTTP cache semantics) would reduce redundant requests, saving end-users bandwidth and reducing server traffic.</li>
                 </ol>
-                
+
                 <aside class="note">
                     <p>
                         The open questions on handling CORS (Cross-Origin Resource Sharing) & whether we should distinguish access between first-party and third-party content needs to be further considered.
@@ -151,7 +294,7 @@
                 </aside>
 
             </dd>
-            
+
             <dt>Stakeholders</dt>
             <dd>
                 <ul>
@@ -164,16 +307,16 @@
             <dt>Analysis</dt>
             <dd>
             This is currently even possible in some way, but it is not a recommended pattern. So making this a standard that is easy to use for both Native and WebView developers would be a win for both groups.
-            
+
             <br>
             <br>
             <a href="https://developer.android.com/reference/android/webkit/WebViewClient#shouldInterceptRequest(android.webkit.WebView,%20android.webkit.WebResourceRequest)">shouldInterceptRequest</a> in Android WebView provide develop with optional network interception capability.
-            
+
             </dd>
 
             <dt>Related W3C deliverables and/or work items</dt>
             <dd>
-                N/A 
+                N/A
             </dd>
 
             <dt>How is the issue solved in the Browser, and what’s more is needed?</dt>
@@ -182,7 +325,7 @@
             </dd>
         </dl>
       </section>
-	    
+
       <section>
         <h2>Render WebView Components and Native Components in same layer</h2>
         <dl>
@@ -190,10 +333,10 @@
             <dd>
             Qing An, Alibaba
             </dd>
-            
+
             <dt>Motivation</dt>
             <dd>
-           Hybrid Native/Webview App and MiniApp often use both WebView Components (text, label, button, image, etc.) and Native Components (such as video).
+          Hybrid Native/Webview App and MiniApp often use both WebView Components (text, label, button, image, etc.) and Native Components (such as video).
                 <ol>
                     <li>Add a map: due to that developing a Web-based map component is difficult and not so good performance, developers may choose to use the Native map component. Usually, developers cover the WebView with the Native map component. But very often, the Native map will cover all the Web components rendered by WebView. And it is difficult to display one or several Web components on the Native map.</li>
                     <li>Integrate a third-party content into WebView: from the business perspective, Native App needs to integrate third-party advertisements into the some App UI pages which are rendered by WebView. Many third-party advertisements are implemented based on Native components. How to integrate Native components with WebView smoothly?</li>
@@ -203,7 +346,7 @@
                 <br>
                 <br>
                 Therefore, Native Component cannot be controlled by z-index property, and cannot overlap with WebView components, as illustrated below.
-                
+
                 <figure>
                     <img alt="Without-same-layer-rendering" src="./images/Without-same-layer-rendering.png" width="400">
                     <figcaption>
@@ -212,16 +355,16 @@
                 </figure>
 
                 But if the Native Components can be rendered in the same layer of WebView Component, AKA in the WebView Layer, developers can easily control the Native Components as well as the overlapping with other WebView Components, as illustrated below.
-                
+
                 <figure>
                     <img alt="With-same-layer-rendering" src="./images/With-same-layer-rendering.png" width="400">
                     <figcaption>
                         Render WebView Components and Native Components in same layer
                     </figcaption>
                 </figure>
-                
+
             </dd>
-            
+
             <dt>Stakeholders</dt>
             <dd>
                 <ul>
@@ -234,12 +377,12 @@
             <dt>Analysis</dt>
             <dd>
             Currently, Native rendering is independent of WebView rendering. Therefore, Native Component cannot be controlled by `z-index` property, and cannot overlap with WebView components.
-            
+
             </dd>
 
             <dt>Related W3C deliverables and/or work items</dt>
             <dd>
-                N/A 
+                N/A
             </dd>
 
             <dt>How is the issue solved in the Browser, and what’s more is needed?</dt>
@@ -248,9 +391,7 @@
             </dd>
         </dl>
       </section>
-	    
 
-	    
       <section>
         <h2>Inject custom JS scripts</h2>
         <dl>
@@ -258,10 +399,10 @@
             <dd>
             Maxim Tsoy, Duck Duck Go
             </dd>
-            
+
             <dt>Motivation</dt>
             <dd>
-            User scripts (aka content scripts) is a powerful tool that unlocks many possibilities such as: 
+            User scripts (aka content scripts) is a powerful tool that unlocks many possibilities such as:
                 <ul>
                     <li>content customization (e.g. applying custom CSS, adding UI elements)</li>
                     <li>security and privacy protection (e.g. blocking harmful APIs, preventing data leakage and fingerprinting)</li>
@@ -269,7 +410,7 @@
                 </ul>
                 Injected scripts can also be a workaround when another WebView feature is not available: for example, due to the lack of granular cookie control in native WebView APIs, one method is to <a href="https://github.com/duckduckgo/content-scope-scripts/blob/main/src/features/cookie.js">inject a script</a> to augment `document.cookie API`.
             </dd>
-            
+
             <dt>Stakeholders</dt>
             <dd>
                 <ul>
@@ -331,7 +472,7 @@
             </dd>
         </dl>
       </section>
-      
+
       <section>
         <h2>Control API permissions</h2>
         <dl>
@@ -339,10 +480,10 @@
             <dd>
             Maxim Tsoy, Duck Duck Go
             </dd>
-            
+
             <dt>Motivation</dt>
             <dd>
-            In apps that can load arbitrary web apps, such as WebView-powered browsers, it is desirable to give users control over website permissions via custom native UI. For example, a browser can prompt a user to allow a web app to access the camera, and then show an indicator while it's being used. To allow browsers to manage permissions, we need WebView APIs to: 
+            In apps that can load arbitrary web apps, such as WebView-powered browsers, it is desirable to give users control over website permissions via custom native UI. For example, a browser can prompt a user to allow a web app to access the camera, and then show an indicator while it's being used. To allow browsers to manage permissions, we need WebView APIs to:
                 <ul>
                     <li>List what permissions have been set for a given site (allow/deny/query)</li>
                     <li>Programmatically change and reset them</li>
@@ -356,7 +497,7 @@
                     <li>other permissions managed with <a href="https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API">Permissions API</a></li>
                 </ul>
             </dd>
-            
+
             <dt>Stakeholders</dt>
             <dd>
                 <ul>
@@ -367,7 +508,7 @@
 
             <dt>Analysis</dt>
             <dd>
-           There's currently no cross-platform approach and support. Most WebViews provide events / APIs for specific permissions, but the feature parity could be better.
+          There's currently no cross-platform approach and support. Most WebViews provide events / APIs for specific permissions, but the feature parity could be better.
             <br>
             Some specific examples of limitations:
                 <ul>
@@ -394,7 +535,7 @@
             </dd>
         </dl>
       </section>
-      
+
       <section>
         <h2>Manage web storage and cookies</h2>
         <dl>
@@ -402,12 +543,12 @@
             <dd>
             Maxim Tsoy, Duck Duck Go
             </dd>
-            
+
             <dt>Motivation</dt>
             <dd>
             Apps loading 3rd-party web content in WebViews may need more granular control over stored data. For example, DuckDuckGo browsers need this for the Fireproof feature, which allows to make exceptions to the cookie/storage removal.
             </dd>
-            
+
             <dt>Stakeholders</dt>
             <dd>
                 <ul>
@@ -436,69 +577,69 @@
                 Browsers manage storage using APIs of a specific rendering engine.
             </dd>
         </dl>
-      </section> 
-      
+      </section>
+
       <section>
-         <h2>The Origin in a WebView for locally hosted content</h2>
-         <dl>
-             <dt>Submitter(s)</dt>
-             <dd>
-             Niklas Merz, Apache Software Foundation
-             </dd>
+        <h2>The Origin in a WebView for locally hosted content</h2>
+        <dl>
+            <dt>Submitter(s)</dt>
+            <dd>
+            Niklas Merz, Apache Software Foundation
+            </dd>
 
-             <dt>Motivation</dt>
-             <dd>
+            <dt>Motivation</dt>
+            <dd>
             WebViews are widely used for building apps on the dominating mobile and desktop platforms. <a href="https://appfigures.com/top-sdks/development/all">Up to 30%</a> of apps found in the app stores (Apple and Google) are built with frameworks like <a href="https://cordova.apache.org">Apache Cordova</a> and <a href="https://capacitorjs.com/">CapacitorJS</a>. Those two frameworks use one big WebView for providing app developers a native wrapper and some plugins for their Web app. App developers build their Web application and put the HTML, CSS and JavaScript files in one folder. The framework then takes care of building a native app project and bundling the Web code as a native application ready to distribute via the app stores.
-             <br>
-             App developers usually only need knowledge in HTML, CSS and JavaScript and can call native OS features via plugins. The frameworks provide a bridge that makes these native features available as JavaScript functions inside the WebView. Because of this, the locally hosted Web application "should just work as published on the Web". Connections to the backend are usually done via fetch/XHR. Because the origin for the app code is different than the backend, there is always CORS involved.
-             <br>
-             Cordova used to host the bundled Web content via `file://` URLs for a long time. In recent years many apps needed to switch to a "proper origin" mainly because of two reason:
-                 <ol>
-                     <li>Web frameworks like React or Angular use their own router framework that relies on the origin and paths. The just don't work with file URLs.</li>
-                     <li>HTTP requests from file URLs have quirks in the CORS handling. If I recall correctly the WebViews started to set the `Origin` HTTP header to `null` which made it difficult to make requests to backends and APIs.</li>
-                 </ol>
-             Therefore Capacitor and Cordova changed the defaults to hosting the content on their "special origins" based on the fact that Android `https:://custom` and iOS `custom:\\custom` are using different approaches for their origins in WebViews.
-             
-             <ul>
-                     <li>Android has <a href="https://developer.android.com/reference/androidx/webkit/WebViewAssetLoader">WebViewAssetLoader</a> that let's you create a "fake" domain to serve files to the WebView. Therefore you can access local files via `https://myappcode/index.html` for example. WebViewAssetLoader only allows you to serve GET requests and access to the HTTP request is limited.</li>
-                     <li>iOS let's you implement a custom URL scheme like `myapp://mycode` and you can access the HTTP request and repsonse quite freely to implement custom logic around that. This is called  <a href="https://developer.apple.com/documentation/webkit/wkurlschemehandler">WKURLSchemehandler.</a></li>
-                 </ul>
-             </dd>
+            <br>
+            App developers usually only need knowledge in HTML, CSS and JavaScript and can call native OS features via plugins. The frameworks provide a bridge that makes these native features available as JavaScript functions inside the WebView. Because of this, the locally hosted Web application "should just work as published on the Web". Connections to the backend are usually done via fetch/XHR. Because the origin for the app code is different than the backend, there is always CORS involved.
+            <br>
+            Cordova used to host the bundled Web content via `file://` URLs for a long time. In recent years many apps needed to switch to a "proper origin" mainly because of two reason:
+                <ol>
+                    <li>Web frameworks like React or Angular use their own router framework that relies on the origin and paths. The just don't work with file URLs.</li>
+                    <li>HTTP requests from file URLs have quirks in the CORS handling. If I recall correctly the WebViews started to set the `Origin` HTTP header to `null` which made it difficult to make requests to backends and APIs.</li>
+                </ol>
+            Therefore Capacitor and Cordova changed the defaults to hosting the content on their "special origins" based on the fact that Android `https:://custom` and iOS `custom:\\custom` are using different approaches for their origins in WebViews.
 
-             <dt>Stakeholders</dt>
-             <dd>
-                 <ul>
-                     <li>WebView providers: Apple, Google, deciders on how to support having a standardized origin of web content hosted by the App for the Webview</li>
-                 </ul>
-             </dd>
+            <ul>
+                    <li>Android has <a href="https://developer.android.com/reference/androidx/webkit/WebViewAssetLoader">WebViewAssetLoader</a> that let's you create a "fake" domain to serve files to the WebView. Therefore you can access local files via `https://myappcode/index.html` for example. WebViewAssetLoader only allows you to serve GET requests and access to the HTTP request is limited.</li>
+                    <li>iOS let's you implement a custom URL scheme like `myapp://mycode` and you can access the HTTP request and repsonse quite freely to implement custom logic around that. This is called  <a href="https://developer.apple.com/documentation/webkit/wkurlschemehandler">WKURLSchemehandler.</a></li>
+                </ul>
+            </dd>
 
-             <dt>Analysis</dt>
-             <dd>
-             Apps built with this hybrid approach in mind are really dependent on making CORS work and HTTP requests possible on their own web content. This approach might benefit from a standardized way of providing Web content from the app to the WebView. This content could be considered secure.
-             <br>
-             The most promiment implementations in Android and iOS  provided solutions for many problems and solved some of those mentioned. But there still exist some issues. Some of them are:
-                 <ul>
-                     <li>With some backends it might cause problems that you need to allow two different origins for CORS. Android only allows `http(s):` with WebViewAssetLoader and iOS only `custom:` etc with WKURLSchemeHandler. So you can't have one static allow setting for CORS but <b>need its to be dynamic or the backend needs to allow multiple origins.</b> (Some backends might not allow this.)</li>
-                     <li><b>Anti tracking features of WebViews might block authentication cookies.</b> Most Apps have gotten rid of cookies for good but sometimes cookies are still used. Especially iOS implemented a stronger Intelligent Tracking Prevention in WebViews that blocks many cookies on CORS requests. In some cases even <a href="https://bugs.webkit.org/show_bug.cgi?id=213510">legitimate authencation cookies to the apps backend can get blocked</a> and developers either need to switch to a different authentication method if possible or find workarounds.</li>
-                     <li><b>Androids and iOS implementations of this "custom scheme API" are quite different.</b> iOS WKURLSchemeHandler is quite powerful. As an app developer you can use the scheme handler for your custom scheme like `app://custom` in many different ways to intercept HTTP requests from the WebView and provide a custom response. From providing local files to proxying requests in the native layer everything is possible. Androids WebViewAssetLoader is more limited with only loading local files in mind. If you implement a custom domain you can mostly provide content to GET requests but your access to the request and response of the HTTP request is limited.</li>
-                     <li>The options to allow/deny traffic to Web content in in Webviews are not really standardized as well. iOS has App Bound Domains but this has it's own capabilities and limitations.</li>
-                 </ul>
-                 So, maybe a standardized APIs for Webviews to load content not found on the Web but provided to the Webview on a "proper origin" can solve this challenge.
+            <dt>Stakeholders</dt>
+            <dd>
+                <ul>
+                    <li>WebView providers: Apple, Google, deciders on how to support having a standardized origin of web content hosted by the App for the Webview</li>
+                </ul>
+            </dd>
 
-             </dd>
+            <dt>Analysis</dt>
+            <dd>
+            Apps built with this hybrid approach in mind are really dependent on making CORS work and HTTP requests possible on their own web content. This approach might benefit from a standardized way of providing Web content from the app to the WebView. This content could be considered secure.
+            <br>
+            The most promiment implementations in Android and iOS  provided solutions for many problems and solved some of those mentioned. But there still exist some issues. Some of them are:
+                <ul>
+                    <li>With some backends it might cause problems that you need to allow two different origins for CORS. Android only allows `http(s):` with WebViewAssetLoader and iOS only `custom:` etc with WKURLSchemeHandler. So you can't have one static allow setting for CORS but <b>need its to be dynamic or the backend needs to allow multiple origins.</b> (Some backends might not allow this.)</li>
+                    <li><b>Anti tracking features of WebViews might block authentication cookies.</b> Most Apps have gotten rid of cookies for good but sometimes cookies are still used. Especially iOS implemented a stronger Intelligent Tracking Prevention in WebViews that blocks many cookies on CORS requests. In some cases even <a href="https://bugs.webkit.org/show_bug.cgi?id=213510">legitimate authencation cookies to the apps backend can get blocked</a> and developers either need to switch to a different authentication method if possible or find workarounds.</li>
+                    <li><b>Androids and iOS implementations of this "custom scheme API" are quite different.</b> iOS WKURLSchemeHandler is quite powerful. As an app developer you can use the scheme handler for your custom scheme like `app://custom` in many different ways to intercept HTTP requests from the WebView and provide a custom response. From providing local files to proxying requests in the native layer everything is possible. Androids WebViewAssetLoader is more limited with only loading local files in mind. If you implement a custom domain you can mostly provide content to GET requests but your access to the request and response of the HTTP request is limited.</li>
+                    <li>The options to allow/deny traffic to Web content in in Webviews are not really standardized as well. iOS has App Bound Domains but this has it's own capabilities and limitations.</li>
+                </ul>
+                So, maybe a standardized APIs for Webviews to load content not found on the Web but provided to the Webview on a "proper origin" can solve this challenge.
 
-             <dt>Related W3C deliverables and/or work items</dt>
-             <dd>
-                 N/A 
-             </dd>
+            </dd>
 
-             <dt>How is the issue solved in the Browser, and what’s more is needed?</dt>
-             <dd>
-                 N/A
-             </dd>
-         </dl>
-       </section>
-      
+            <dt>Related W3C deliverables and/or work items</dt>
+            <dd>
+                N/A
+            </dd>
+
+            <dt>How is the issue solved in the Browser, and what’s more is needed?</dt>
+            <dd>
+                N/A
+            </dd>
+        </dl>
+      </section>
+
       <section>
         <h2>Define different types of WebViews</h2>
         <dl>
@@ -506,12 +647,12 @@
             <dd>
             Niklas Merz, Apache Software Foundation
             </dd>
-            
+
             <dt>Motivation</dt>
             <dd>
             As more and more use cases are discussed, it might be helpful to define and name the different uses of WebViews. WebViews can be used in many different ways and some of them are vastly different in terms of privacy and security implications. It could be a good idea to separate them into different categories to discuss them better.
             </dd>
-            
+
             <dt>Stakeholders</dt>
             <dd>
                 <ul>
@@ -543,79 +684,7 @@
                 WebViews and browsers currently always have the same features and restrictions. Different WebView implementations share different APIs to interact with the WebView content.
             </dd>
         </dl>
-      </section>  
-
-    </section>
-    
-    <section class="appendix">
-      <h2>Types of WebViews</h2>
-        <table class="data">
-            <thead>
-            <tr>
-                <th>WebView Type
-                <th>Name
-                <th>Platforms
-                <th>Description
-                <th>Features
-                <th>Limitations
-                <th>UX flexibility
-                <th>Usage Example
-            <tbody>
-                <tr>
-                    <td>Full-fledged WebViews
-                    <td>Android Webview
-                    <td>Android
-                    <td>Default WebView implementation on Android
-                    <td>Rich API with JS and CSS interaction, Tie WebView and native APIs together
-                    <td>Features equal to current Chrime but some Web APIs are not supported
-                    <td>Allows you to mix native content with the WebView and to resize it
-                    <td>Hybrid Frameworks (Cordova, Capacitor)
-                <tr>
-                    <td>WebViews for a browser-like experience in apps
-                    <td>Custom Tabs
-                    <td>Android
-                    <td>API for opening browser-like WebViews on Android
-                    <td>Browser navigation and conveniance features like password fill
-                    <td>App has no access to Web content
-                    <td>Covers the entire application with some minimal top bar customization
-                    <td>Link preview in social media Apps
-                <tr>
-                    <td>WebViews for a browser-like experience in apps
-                    <td>SFSafariViewController
-                    <td>iOS, iPadOS
-                    <td>API for opening browser-like WebViews on iOS
-                    <td>Browser navigation and conveniance features like password fill
-                    <td>App has no access to Web content
-                    <td>Covers the entire application with some minimal top bar customization
-                    <td>Link preview in social media apps
-                <tr>
-                    <td>
-                    <td>UIWebView (deprecated)
-                    <td>iOS, iPadOS, macOS
-                    <td>Soon-to-be-removed WebView API of iOS
-                    <td>Rich API with JS and CSS interaction, Tie WebView and native APIs together
-                    <td>Some current Web standards not implemented. Performance and security wise inferior to WKWebView, deprecated
-                    <td>Allows you to mix native content with the WebView and to resize it
-                    <td>Hybrid Frameworks (Cordova, Capacitor)
-                <tr>
-                    <td>Full-fledged WebViews
-                    <td>WKWebView
-                    <td>iOS, iPadOS, macOS
-                    <td>Default WebView implementation on iOS
-                    <td>Rich API with JS and CSS interaction, Tie WebView and native APIs together                    <td>Features similar to current Safari but some Web APIs are not supported
-                    <td>Allows you to mix native content with the WebView and to resize it
-                    <td>Hybrid Frameworks (Cordova, Capacitor)
-                <tr>
-                    <td>Full-fledged WebViews
-                    <td>WebView2
-                    <td>Windows
-                    <td>Default WebView implementation on Windows
-                    <td>Rich API with JS and CSS interaction
-                    <td>
-                    <td>
-                    <td>
-            </table>
-      
+      </section>
     </section>
   </body>
 </html>
