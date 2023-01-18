@@ -23,7 +23,7 @@
         companyURL: "https://www.google.com/"
       }],
         github: "WebView-CG/usage-and-challenges",
-        xref: "web-platform",
+        xref: ["miniapp-packaging"],
         group: "cg/webview",
       };
     </script>
@@ -37,102 +37,111 @@
     </section>
     <section class="informative">
       <h2>Introduction</h2>
-      <p>The WebView Community Group aims to identify, understand and reduce the issues arising from the use of software components (typically referred as WebViews) that are used to render Web technology-based content outside of a Web browser (Native Apps, MiniApps, etc).</p>
+      <p>The WebView Community Group aims to identify, understand and reduce the issues arising from the use of software components (typically referred to as [=WebViews=]) that are used to render Web technology-based content outside of a Web browser (native applications, MiniApps, etc).</p>
       <p>This document contains sections describing the use cases that were contributed by multiple authors. Since this document is a group note, additional use cases will be added in future revisions of this document.</p>
     </section>
 
     <section class="informative">
-      <h2>Types of WebViews</h2>
-      <p>WebViews can differ based on the following properties</p>
-      <p>
-        <ul>
-          <li><em>UX flexibility</em>: Whether the web content can be embedded within the native application</li>
-          <li><em>Access to web content</em>: Whether the native application has the ability to read or modify the web content</li>
-          <li><em>State sharing</em>: Whether the WebView shares state with the browser or is completely isolated</li>
-        </ul>
-      </p>
-      <p>However, in practice, WebViews are classified into one of two categories with fixed properties</p>
-      <dl>
-        <dt>browser-like WebViews</dt>
-        <dd>These are more straightforward WebViews with a simpler API surface mostly related to loading the web page. They generally span the entire application, do not provide access to the web content, and share state with the browser.</dd>
-        <dt>fully-fledged WebViews</dt>
-        <dd>These WebViews are used for creating richer experiences by utilizing powerful integration features. They have full UX flexibility when integrated within an application, provide the ability to access the web content (communication between the native and web), and are completely isolated from the system browsers.</dd>
-      </dl>
+      <h2>WebViews</h2>
+      <p>A <dfn data-lt="native application|native app">native application</dfn> (or native <abbr title="application">app</abbr>) is an application designed to run on a particular operating system. It is written in native code and leverages native APIs exposed by the operating system. Typical examples include an iOS application written in Swift or Objective-C and that uses the iOS <abbr title="Software Development Kit">SDK</abbr>, or an Android application written in Kotlin, Java or C++ using the Android SDK. [=native applications=] do not require a dedicated runtime to run as they interface with the operating system directly.</p>
+
+      <p>A <dfn>web application</dfn> (or web app) is an application written using Web technologies (URLs, HTML, CSS, JavaScript APIs). [=web applications=] typically run in a web browser runtime. All systems and devices that can render Web content have at least one <dfn>system-wide Web browser</dfn> application, which is either pre-installed on the device or that users can install.</p>
+
+      <p><dfn>WebViews</dfn> are software components provided in an SDK that can be used to render Web content directly within a [=native application=] without having to switch to the [=system-wide Web browser=]. [=WebViews=] are used in a wide range of scenarios. They all share the same architecture: a [=native application=] embeds and interacts with one or more [=WebViews=] to render Web content within the [=WebView=].</p>
+
+      <section class="informative">
+        <h3>Types of WebViews</h3>
+        <p>[=WebViews=] can differ based on the following properties:</p>
+        <p>
+          <ul>
+            <li><dfn data-lt="UX flexibility|flexible"><abbr title="User Experience">UX</abbr> flexibility</dfn>: Whether the [=native application=] has full control over the UX provided by the WebView or whether the WebView imposes the UX with limited customization and control from the [=native application=].</li>
+            <li><dfn data-lt="Access to the web content|Access the web content">Access to the web content</dfn>: Whether the [=native application=] has the ability to read and modify the web content rendered in the WebView. The native application can leverage this to establish a communication link between the native code and the Web code, and in particular to expose native APIs to the Web content, making it possible for the Web content to make native calls.</li>
+            <li><dfn data-lt="State sharing|Share state">State sharing</dfn>: Whether the WebView shares state such as cookies and cache with the [=system-wide web browser=], or is completely isolated.</li>
+          </ul>
+        </p>
+        <p>However, in practice, [=WebViews=] are classified into one of two categories with fixed properties:</p>
+        <dl>
+          <dt><dfn>Browser-like</dfn> WebViews</dt>
+          <dd>These WebViews are straightforward to embed with a simpler API surface mostly targeted at loading the web page. They are generally not [=flexible=], do not provide [=access to the web content=], but [=share state=] with the [=system-wide web browser=].</dd>
+          <dt><dfn>Fully-fledged</dfn> WebViews</dt>
+          <dd>These WebViews are used for creating richer experiences and feature powerful integration primitives. They have full [=UX flexibility=] when integrated within an application, provide the ability to [=access the web content=] (native and web parts of the application can communicate), and do not [=share state=] with the [=system-wide web browser=].</dd>
+        </dl>
+      </section>
     </section>
 
     <section class="informative">
       <h2>Implementations</h2>
-      <p>The following table contains different WebView implementations with their different considerations</p>
+      <p>The following table contains different [=WebView=] implementations with their different considerations</p>
       <table class="data">
         <thead>
           <tr>
-            <th>WebView Type</th>
+            <th>Category</th>
             <th>Name</th>
             <th>Platforms</th>
             <th>Description</th>
             <th>Features</th>
             <th>Limitations</th>
-            <th>UX flexibility</th>
+            <th>[=UX flexibility=]</th>
             <th>Usage Example</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Full-fledged WebViews</td>
-            <td>Android Webview</td>
+            <td>[=Fully-fledged=]</td>
+            <td>Android <code>WebView</code></td>
             <td>Android</td>
             <td>Default WebView implementation on Android</td>
-            <td>Rich API with JS and CSS interaction. Tie WebView and native APIs together</td>
-            <td>Features equal to current Chrome but some Web APIs are not supported</td>
-            <td>Allows you to mix native content with the WebView and to resize it</td>
+            <td>Apps have [=access to the web content=]</td>
+            <td>Same features as in Chrome overall but some Web APIs are not supported</td>
+            <td>WebView may be resized and mixed with native content</td>
             <td>Hybrid Frameworks (Cordova, Capacitor)</td>
           </tr>
           <tr>
-            <td>WebViews for a browser-like experience in apps</td>
+            <td>[=Browser-like=]</td>
             <td>Custom Tabs</td>
             <td>Android</td>
-            <td>API for opening browser-like WebViews on Android</td>
-            <td>Browser navigation and conveniance features like password fill</td>
-            <td>App has no access to Web content</td>
-            <td>Covers the entire application with some minimal top bar customization</td>
+            <td>API for opening [=browser-like=] WebViews on Android</td>
+            <td>Browser navigation and convenience features like password autofill</td>
+            <td>No [=access to the Web content=]</td>
+            <td>Only minimal customization of the top bar possible</td>
             <td>Link preview in social media Apps</td>
           </tr>
           <tr>
-            <td>WebViews for a browser-like experience in apps</td>
-            <td>SFSafariViewController</td>
+            <td>[=Browser-like=]</td>
+            <td><code>SFSafariViewController</code></td>
             <td>iOS, iPadOS</td>
-            <td>API for opening browser-like WebViews on iOS</td>
-            <td>Browser navigation and convenience features like password fill</td>
-            <td>App has no access to Web content</td>
-            <td>Covers the entire application with some minimal top bar customization</td>
+            <td>API for opening [=browser-like=] WebViews on iOS</td>
+            <td>Browser navigation and convenience features like password autofill</td>
+            <td>No [=access to the Web content=]</td>
+            <td>Only minimal customization of the top bar possible</td>
             <td>Link preview in social media apps</td>
           </tr>
           <tr>
             <td></td>
-            <td>UIWebView (deprecated)</td>
+            <td><code>UIWebView</code> (deprecated)</td>
             <td>iOS, iPadOS, macOS</td>
             <td>Soon-to-be-removed WebView API of iOS</td>
-            <td>Rich API with JS and CSS interaction. Tie WebView and native APIs together</td>
-            <td>Some current Web standards not implemented. Performance and security wise inferior to WKWebView, deprecated</td>
-            <td>Allows you to mix native content with the WebView and to resize it</td>
+            <td>Apps have [=access to the web content=]</td>
+            <td>Some Web standards are not supported. Performance and security wise inferior to <code>WKWebView</code>, deprecated</td>
+            <td>WebView may be resized and mixed with native content</td>
             <td>Hybrid Frameworks (Cordova, Capacitor)</td>
           </tr>
           <tr>
-            <td>Full-fledged WebViews</td>
-            <td>WKWebView</td>
+            <td>[=Fully-fledged=]</td>
+            <td><code>WKWebView</code></td>
             <td>iOS, iPadOS, macOS</td>
             <td>Default WebView implementation on iOS</td>
-            <td>Rich API with JS and CSS interaction. Tie WebView and native APIs together</td>
-            <td>Features similar to current Safari but some Web APIs are not supported</td>
-            <td>Allows you to mix native content with the WebView and to resize it</td>
+            <td>Apps have [=access to the web content=]</td>
+            <td>Same features as in Safari overall but some Web APIs are not supported</td>
+            <td>WebView may be resized and mixed with native content</td>
             <td>Hybrid Frameworks (Cordova, Capacitor)</td>
           </tr>
           <tr>
-            <td>Full-fledged WebViews</td>
-            <td>WebView2</td>
+            <td>[=Fully-fledged=]</td>
+            <td><code>WebView2</code></td>
             <td>Windows</td>
             <td>Default WebView implementation on Windows</td>
-            <td>Rich API with JS and CSS interaction</td>
+            <td>Apps have [=access to the web content=]</td>
             <td></td>
             <td></td>
             <td></td>
@@ -141,7 +150,7 @@
       </table>
 
       <aside class="warning">
-        <p>This list of WebView implementations is not comprehensive, and is based on the information provided in <a href="https://github.com/WebView-CG/usage-and-challenges/issues/19">#19</a></p>
+        <p>This list of WebView implementations is not comprehensive. It is based on the information provided in <a href="https://github.com/WebView-CG/usage-and-challenges/issues/19">#19</a></p>
       </aside>
 
       <aside class="note">
@@ -152,36 +161,35 @@
     <section class="informative">
       <h2>Usages</h2>
       <dl>
-        <dt>Hybrid apps</dt>
+        <dt><dfn>Hybrid apps</dfn></dt>
         <dd>
-          <p>Hybrid apps combine elements of native applications and the web.</p>
-          <p>Web apps are an example of this, where the content is displayed using web technologies. This provides developers a cross-platform way of building an application. For native capabilities that are not available in the Web Platform, <em>fully-fledged</em> WebViews can be used to achieve parity via a native/web communication channel (web content access).</p>
-          <p>Another example is in-app browsers (IABs), which is a pattern of handling web page links within the application.</p>
+          <p>[=Hybrid apps=] combine elements of [=native applications=] and [=web applications=].</p>
+          <p>[=Web applications=] wrapped in a native container are an example of an [=hybrid app=]. This provides developers with a cross-platform mechanism to build a [=native application=]. When [=fully-fledged=] WebViews are used, the ability to [=access the web content=] may be leveraged to add native-like capabilities to the WebView.</p>
+          <p>Another example is In-App Browsers (IABs), which is a pattern for browsing links to web pages within a native application without leaving the application.</p>
         </dd>
         <dt>Browsers</dt>
-        <dd>WebViews can enable building browsers more easily, since they provide the capabilties of a rendering engine. With <em>fully-fledged</em> WebViews, the browsers can provide more customizable experiences (e.g. privacy-focused browsers) by modifying the web content.</dd>
+        <dd>WebViews may be used to build browsers since they provide the capabilities of a rendering engine. When done with [=fully-fledged=] WebViews, these browsers can provide more customizable experiences (e.g. privacy-focused browsers) by modifying the web content.</dd>
         <dt>Mini apps & super apps</dt>
         <dd>
-          <p>WebViews enable the rendering of the web content the constitiute a MiniApp page.</p>
-          <p>For some Web components that are not supported by the WebView or have performance limitations (such as map, video, etc.), native components are used and are rendered by native view.</p>
-          <p>For these reasons, <em>fully-fledged</em> WebViews are used in the MiniApp ecosystem, to allow for UX flexibility and communication between the native side & the web content.</p>
-          
+          <p>WebViews may be used to render the web content of a [=MiniApp=] page.</p>
+          <p>Features that are not supported by the WebView, or that run with limited performance (such as maps, videos, etc.), are typically replaced by native components that take care of the rendering.</p>
+          <p>For these reasons, [=fully-fledged=] WebViews are used in the [=MiniApp=] ecosystem, to allow for [=UX flexibility=] and [=access to the web content=].</p>
         </dd>
       </dl>
     </section>
 
     <section class="informative">
       <h2>Limitations & Challenges</h2>
-      <p>Individual limitations and challenges can be found in <a href="#scenarios"></a>. The following themes have emerged</p>
+      <p>Individual limitations and challenges linked to specific usage scenarios are detailed in <a href="#scenarios"></a>. The following themes have emerged:</p>
       <dl>
         <dt>Performance</dt>
-        <dd>Responsiveness is a critical requirement for applications. There are multiple opportunities to improve WebView performance, such as for intialization and page loads. </dd>
+        <dd>Responsiveness is a critical requirement for applications. There are multiple opportunities to improve WebView performance, such as for initialization and page loads.</dd>
         <dt>Inconsistencies</dt>
-        <dd>Behavioural inconsistencies across different WebViews diminish the interoperability of the web, since web experiences will have to be special-cased against the WebView.</dd>
+        <dd>Behavioral inconsistencies across different WebViews diminish the interoperability of the web since web experiences will have to be special-cased against WebViews.</dd>
         <dt>Control</dt>
-        <dd>Especially for <em>fully-fledged</em> WebViews, some user journeys are unachievable without additional control over the web content and rendering engine.</dd>
+        <dd>Especially for [=fully-fledged=] WebViews, some user journeys are unachievable without additional control over the web content and rendering engine.</dd>
         <dt>Security and Privacy</dt>
-        <dd><em>fully-fledged</em> WebViews provide some powerful APIs that allow native apps access to the web content, unrestricted by web security boundaries. This unlocks powerful integration features, however it can also be used for malicious purposes such as tracking and phishing.</dd>
+        <dd>[=fully-fledged=] WebViews ship with powerful APIs that provide [=access to the web content=] without following usual web security restrictions. This unlocks powerful integration scenarios but can also be used for malicious purposes such as tracking and phishing.</dd>
       </dl>
     </section>
 
@@ -664,7 +672,7 @@
 
             <dt>Analysis</dt>
             <dd>
-                We can already see these different categories of WebViews with the APIs available on the two big mobile platforms. Android offers a powerful WebView API and <a href="https://developer.chrome.com/blog/custom-tabs-android-11/">Chrome Custom Tabs</a>. iOS has WKWebView for a rich WebView API and <a href="https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller">SFSafariViewController</a> for a more browser-like experience embedded in native Apps.
+                We can already see these different categories of WebViews with the APIs available on the two big mobile platforms. Android offers a powerful WebView API and <a href="https://developer.chrome.com/blog/custom-tabs-android-11/">Chrome Custom Tabs</a>. iOS has WKWebView for a rich WebView API and <a href="https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller"><code>SFSafariViewController</code></a> for a more browser-like experience embedded in native Apps.
                 <br>
                 The WebView APIs offer powerful features for example injecting JavaScript or other interactions with the pages loaded into the WebView. These features require the designers of the WebView APIs and App developers to think a lot about the security and privacy implications of their design choices. WebViews that allow the user to navigate the Web freely need to be much more secure and restricted than WebViews that just allow code under control of the App developers.
                 <br>
