@@ -48,16 +48,16 @@
 
   <section class="informative">
     <h2>WebViews</h2>
-    <p>A <dfn data-lt="native application|native app">native application</dfn> (or native <abbr
+    <p>A <dfn data-lt="native app">native application</dfn> (or native <abbr
         title="application">app</abbr>) is an application designed to run on a particular operating system. It is
       written in native code and leverages native APIs exposed by the operating system. Typical examples include an iOS
       application written in Swift or Objective-C and that uses the iOS <abbr
         title="Software Development Kit">SDK</abbr>, or an Android application written in Kotlin, Java or C++ using the
-      Android SDK. [=native applications=] do not require a dedicated runtime to run as they interface with the
+      Android SDK. [=Native applications=] do not require a dedicated runtime to run as they interface with the
       operating system directly.</p>
 
-    <p>A <dfn>web application</dfn> (or web app) is an application written using Web technologies (URLs, HTML, CSS,
-      JavaScript APIs). [=web applications=] typically run in a web browser runtime. All systems and devices that can
+    <p>A <dfn data-lt="web app">web application</dfn> (or web app) is an application written using Web technologies (URLs, HTML, CSS,
+      JavaScript APIs). [=Web applications=] typically run in a web browser runtime. All systems and devices that can
       render Web content have at least one <dfn>system-wide Web browser</dfn> application, which is either pre-installed
       on the device or that users can install.</p>
 
@@ -133,7 +133,7 @@
           <td>Browser navigation and convenience features like password autofill</td>
           <td>No [=access to the Web content=]</td>
           <td>Only minimal customization of the top bar possible</td>
-          <td>Link preview in social media Apps</td>
+          <td>Link preview in social media apps</td>
         </tr>
         <tr>
           <td>[=Browser-like=]</td>
@@ -250,9 +250,9 @@
 
         <dt>Motivation</dt>
         <dd>
-          It is quite common to use WebView in Native App development, due to WebView’s benefit of cross-platform
-          interoperability. But the page loading performance of WebView cannot satisfy Native App well, which means the
-          loading of a WebView page is quite slower than loading a Native page.
+          It is quite common to use WebView in [=native app=] development, due to WebView’s benefit of cross-platform
+          interoperability. But the page loading performance of WebView cannot satisfy [=native app=] well, which means the
+          loading of a WebView page is quite slower than loading a native page.
           <br>
           <br>
           The below is WebView page loading, it firstly shows the white screen.
@@ -264,7 +264,7 @@
             </figcaption>
           </figure>
 
-          But for the Native page loading as shown below, it shows the skeleton immediately, which gives a better user
+          But for the native page loading as shown below, it shows the skeleton immediately, which gives a better user
           experience compared with WebView.
 
           <figure>
@@ -282,8 +282,8 @@
         <dd>
           <ul>
             <li>WebView provider: browsers, deciders on how to enhance WebView</li>
-            <li>WebView user: Native App or MiniApp which rely on WebView to render pages</li>
-            <li>End user: users of the Native App or MiniApp are indirectly using the pages and functions implemented by
+            <li>WebView user: [=native app=] or MiniApp which rely on WebView to render pages</li>
+            <li>End user: users of the [=native app=] or MiniApp are indirectly using the pages and functions implemented by
               WebView</li>
           </ul>
         </dd>
@@ -320,7 +320,7 @@
               JavaScript, Img, etc.), but they are not supported or only partly supported by WebView.</li>
             <li>What’s more: how to pre-request the data (JSON, XML, etc.)
               <br>
-              Take e-commerce App as example. WebView is used to render the page of product list and product info. So, a
+              Take e-commerce app as example. WebView is used to render the page of product list and product info. So, a
               request to fetch the data is needed, and the data is described and transferred in the format of JSON or
               XML. Sometimes, user info is also carried in the request, to obtain the personalized product info. If the
               data can be pre-requested, the performance of loading a product page can be increased.
@@ -331,7 +331,7 @@
     </section>
 
     <section>
-      <h2>Requests/responses sharing and proxy between Native and WebView</h2>
+      <h2>Requests/responses sharing and proxy between native and WebView</h2>
       <dl>
         <dt>Submitter(s)</dt>
         <dd>
@@ -342,11 +342,11 @@
 
         <dt>Motivation</dt>
         <dd>
-          In a hybrid Native/WebView app, some Native app may load first-party website or third-party website through
-          WebView. So, the Native app and the WebView may make the exact same calls in first-party business, or Native
-          app handles the resource request on behalf of WebView and the corresponding response data returned to WebView
-          can even be different with what is received by Native from the backend server. Also, not all requests want to
-          be proxied through Native, WebView user want to proxy a small number of requests locally to load offline
+          In a hybrid native/WebView app, some [=native apps=] may load first-party website or third-party website through
+          WebView. So, the [=native app=] and the WebView may make the exact same calls in first-party business, or [=native app=]
+          handles the resource request on behalf of WebView and the corresponding response data returned to WebView
+          can even be different with what is received by native from the backend server. Also, not all requests want to
+          be proxied through native, WebView user want to proxy a small number of requests locally to load offline
           resources.
           <br>
           <br>
@@ -385,14 +385,14 @@
           <ul>
             <li>WebView provider: Apple, Google, deciders on how to enhance sharing between WebView & Native</li>
             <li>WebView user: Native Business rely on WebView to send internal request, or load offline resource</li>
-            <li>End user: users of the App save bandwidth by not having to make duplicate calls</li>
+            <li>End user: users of the app save bandwidth by not having to make duplicate calls</li>
           </ul>
         </dd>
 
         <dt>Analysis</dt>
         <dd>
           This is currently even possible in some way, but it is not a recommended pattern. So making this a standard
-          that is easy to use for both Native and WebView developers would be a win for both groups.
+          that is easy to use for both native and WebView developers would be a win for both groups.
 
           <br>
           <br>
@@ -424,45 +424,45 @@
 
         <dt>Motivation</dt>
         <dd>
-          Hybrid Native/Webview App and MiniApp often use both WebView Components (text, label, button, image, etc.) and
+          Hybrid native/Webview app and MiniApp often use both WebView Components (text, label, button, image, etc.) and
           Native Components (such as video).
           <ol>
             <li>Add a map: due to that developing a Web-based map component is difficult and not so good performance,
-              developers may choose to use the Native map component. Usually, developers cover the WebView with the
-              Native map component. But very often, the Native map will cover all the Web components rendered by
-              WebView. And it is difficult to display one or several Web components on the Native map.</li>
-            <li>Integrate a third-party content into WebView: from the business perspective, Native App needs to
-              integrate third-party advertisements into the some App UI pages which are rendered by WebView. Many
-              third-party advertisements are implemented based on Native components. How to integrate Native components
+              developers may choose to use the native map component. Usually, developers cover the WebView with the
+              native map component. But very often, the Native map will cover all the Web components rendered by
+              WebView. And it is difficult to display one or several Web components on the native map.</li>
+            <li>Integrate a third-party content into WebView: from the business perspective, a [=native app=] needs to
+              integrate third-party advertisements into the some app UI pages which are rendered by WebView. Many
+              third-party advertisements are implemented based on native components. How to integrate native components
               with WebView smoothly?</li>
-            <li>WebView interacts with Native component: developers have implemented a fancy UI page based on WebView,
-              and then the WebView needs to use an extra Native component. How can the Native component interact with
-              WebView smoothly? Like how to let Native component reuse the event handling and message interaction that
+            <li>WebView interacts with native component: developers have implemented a fancy UI page based on WebView,
+              and then the WebView needs to use an extra native component. How can the native component interact with
+              WebView smoothly? Like how to let native component reuse the event handling and message interaction that
               have been implemented in WebView?</li>
           </ol>
-          Unlike WebView Components, the Native Components are rendered by Native App instead of WebView. While Native
-          Components can bring more features by complementing WebView Components, Native Components also bring issue for
-          developers due to that Native rendering is independent of WebView rendering.
+          Unlike WebView Components, the native components are rendered by [=native app=] instead of WebView. While native
+          components can bring more features by complementing WebView components, native components also bring issue for
+          developers due to that native rendering is independent of WebView rendering.
           <br>
           <br>
-          Therefore, Native Component cannot be controlled by z-index property, and cannot overlap with WebView
+          Therefore, native component cannot be controlled by z-index property, and cannot overlap with WebView
           components, as illustrated below.
 
           <figure>
             <img alt="Without-same-layer-rendering" src="./images/Without-same-layer-rendering.png" width="400">
             <figcaption>
-              Render WebView Components and Native Components in separate layers
+              Render WebView Components and native components in separate layers
             </figcaption>
           </figure>
 
-          But if the Native Components can be rendered in the same layer of WebView Component, AKA in the WebView Layer,
-          developers can easily control the Native Components as well as the overlapping with other WebView Components,
+          But if the native components can be rendered in the same layer of WebView component, AKA in the WebView layer,
+          developers can easily control the native components as well as the overlapping with other WebView components,
           as illustrated below.
 
           <figure>
             <img alt="With-same-layer-rendering" src="./images/With-same-layer-rendering.png" width="400">
             <figcaption>
-              Render WebView Components and Native Components in same layer
+              Render WebView components and native components in same layer
             </figcaption>
           </figure>
 
@@ -472,15 +472,15 @@
         <dd>
           <ul>
             <li>WebView provider: Apple, Google, deciders on how to support the same layer rendering</li>
-            <li>Native App or MiniApp developer: rely on the WebView</li>
-            <li>End user: users of the Native App or MiniApp are indirectly using the pages and functions implemented by
+            <li>[=Native app=] or MiniApp developer: rely on the WebView</li>
+            <li>End user: users of the [=native app=] or MiniApp are indirectly using the pages and functions implemented by
               WebView.</li>
           </ul>
         </dd>
 
         <dt>Analysis</dt>
         <dd>
-          Currently, Native rendering is independent of WebView rendering. Therefore, Native Component cannot be
+          Currently, native rendering is independent of WebView rendering. Therefore, native component cannot be
           controlled by `z-index` property, and cannot overlap with WebView components.
 
         </dd>
@@ -533,7 +533,7 @@
         <dd>
           Web extensions have a similar concept of <a
             href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts">content
-            scripts</a>, however the features provided by the native WebView implementaions are much less versatile and
+            scripts</a>, however the features provided by the native WebView implementations are much less versatile and
           not standardized.
           <br>
           <br>
@@ -582,7 +582,7 @@
                 <br>
                 Content scripts often work in combination with the native components and so require communication. For
                 example, in DuckDuckGo browsers scripts use this to read user configuration (which is managed by the
-                Native App), and trigger native UI changes on page-generated events.
+                [=native app=]), and trigger native UI changes on page-generated events.
                 <br>
                 WKWebView provides a <a
                   href="https://developer.apple.com/documentation/webkit/wkscriptmessagehandlerwithreply">convenient
@@ -616,7 +616,7 @@
           technology.
           <br>
           However, just exposing the WebExtensions API might not always be the right solution: WebViews are embedded in
-          Native Apps, which operate and protect under a different security and performance model. In general, WebView
+          [=native apps=], which operate and protect under a different security and performance model. In general, WebView
           should probably give more raw control than WebExtensions API.
         </dd>
       </dl>
@@ -632,7 +632,7 @@
 
         <dt>Motivation</dt>
         <dd>
-          In apps that can load arbitrary web apps, such as WebView-powered browsers, it is desirable to give users
+          In apps that can load arbitrary [=web apps=], such as WebView-powered browsers, it is desirable to give users
           control over website permissions via custom native UI. For example, a browser can prompt a user to allow a web
           app to access the camera, and then show an indicator while it's being used. To allow browsers to manage
           permissions, we need WebView APIs to:
@@ -757,13 +757,13 @@
             href="https://appfigures.com/top-sdks/development/all">Up to 30%</a> of apps found in the app stores (Apple
           and Google) are built with frameworks like <a href="https://cordova.apache.org">Apache Cordova</a> and <a
             href="https://capacitorjs.com/">CapacitorJS</a>. Those two frameworks use one big WebView for providing app
-          developers a native wrapper and some plugins for their Web app. App developers build their Web application and
+          developers a native wrapper and some plugins for their [=web app=]. App developers build their [=web application=] and
           put the HTML, CSS and JavaScript files in one folder. The framework then takes care of building a native app
           project and bundling the Web code as a native application ready to distribute via the app stores.
           <br>
           App developers usually only need knowledge in HTML, CSS and JavaScript and can call native OS features via
           plugins. The frameworks provide a bridge that makes these native features available as JavaScript functions
-          inside the WebView. Because of this, the locally hosted Web application "should just work as published on the
+          inside the WebView. Because of this, the locally hosted [=web application=] "should just work as published on the
           Web". Connections to the backend are usually done via fetch/XHR. Because the origin for the app code is
           different than the backend, there is always CORS involved.
           <br>
@@ -796,7 +796,7 @@
         <dd>
           <ul>
             <li>WebView providers: Apple, Google, deciders on how to support having a standardized origin of web content
-              hosted by the App for the Webview</li>
+              hosted by the app for the Webview</li>
           </ul>
         </dd>
 
@@ -813,7 +813,7 @@
               Android only allows `http(s):` with WebViewAssetLoader and iOS only `custom:` etc with WKURLSchemeHandler.
               So you can't have one static allow setting for CORS but <b>need its to be dynamic or the backend needs to
                 allow multiple origins.</b> (Some backends might not allow this.)</li>
-            <li><b>Anti tracking features of WebViews might block authentication cookies.</b> Most Apps have gotten rid
+            <li><b>Anti tracking features of WebViews might block authentication cookies.</b> Most apps have gotten rid
               of cookies for good but sometimes cookies are still used. Especially iOS implemented a stronger
               Intelligent Tracking Prevention in WebViews that blocks many cookies on CORS requests. In some cases even
               <a href="https://bugs.webkit.org/show_bug.cgi?id=213510">legitimate authencation cookies to the apps
@@ -877,25 +877,25 @@
             href="https://developer.chrome.com/blog/custom-tabs-android-11/">Chrome Custom Tabs</a>. iOS has WKWebView
           for a rich WebView API and <a
             href="https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller"><code>SFSafariViewController</code></a>
-          for a more browser-like experience embedded in native Apps.
+          for a more browser-like experience embedded in [=native apps=].
           <br>
           The WebView APIs offer powerful features for example injecting JavaScript or other interactions with the pages
-          loaded into the WebView. These features require the designers of the WebView APIs and App developers to think
+          loaded into the WebView. These features require the designers of the WebView APIs and app developers to think
           a lot about the security and privacy implications of their design choices. WebViews that allow the user to
           navigate the Web freely need to be much more secure and restricted than WebViews that just allow code under
-          control of the App developers.
+          control of the app developers.
           <br>
-          WebViews are used a lot to build the UI or core features of Apps. These Apps could benefit from more control
-          over the native parts of the App or vice versa the native code might want to have more control over the Web
+          WebViews are used a lot to build the UI or core features of apps. These apps could benefit from more control
+          over the native parts of the app or vice versa the native code might want to have more control over the Web
           content.
           <br>
-          The distinction between browser-like WebViews and full WebViews embedded into Apps is the most obvious one but
+          The distinction between browser-like WebViews and full WebViews embedded into apps is the most obvious one but
           there are many more like we see with ePub and <a
             href="https://www.w3.org/TR/mini-app-white-paper/">MiniApps</a>.
           <br>
-          If there are different types of WebViews with different use cases and feature sets App developers could
+          If there are different types of WebViews with different use cases and feature sets app developers could
           benefit from more freedom or security and privacy. Browser vendors could roll out powerful features for
-          developers of Apps built around WebViews but still keep the browsers and browser-like WebViews secure.
+          developers of apps built around WebViews but still keep the browsers and browser-like WebViews secure.
         </dd>
 
         <dt>Related W3C deliverables and/or work items</dt>
