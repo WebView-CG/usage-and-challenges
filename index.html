@@ -29,9 +29,9 @@
 <body>
   <section id="abstract">
     <p>This document aims to identify representative use cases of where WebViews are being used, regardless of the
-      platform and type of device they're used on, identify the issues that arise from these usages and determine
-      whether these issues can be addressed through improvements to the Web Platform, the surrounding ecosystem (e.g.
-      documentation, testing frameworks) or through other mechanisms.</p>
+      platform and type of device they're used on; identify the issues that arise from these usages; and determine
+      whether these issues can be addressed through improvements to the Web Platform, the surrounding ecosystem (e.g.,
+      documentation, testing frameworks), or through other mechanisms.</p>
   </section>
   <section id="sotd">
     <p>This is the skeleton of the core document on which the WebView Community Group will focus in its <a
@@ -52,8 +52,8 @@
         title="application">app</abbr>) is an application designed to run on a particular operating system. It is
       written in native code and leverages native APIs exposed by the operating system. Typical examples include an iOS
       application written in Swift or Objective-C and that uses the iOS <abbr
-        title="Software Development Kit">SDK</abbr>, or an Android application written in Kotlin, Java or C++ using the
-      Android SDK. [=Native applications=] do not require a dedicated runtime to run as they interface with the
+        title="Software Development Kit">SDK</abbr> or an Android application written in Kotlin, Java or C++ using the
+      Android SDK. [=Native applications=] do not require a dedicated runtime to run, as they interface with the
       operating system directly.</p>
 
     <p>A <dfn data-lt="web app">web application</dfn> (or web app) is an application written using Web technologies (URLs, HTML, CSS,
@@ -79,8 +79,8 @@
           application can leverage this to establish a communication link between the native code and the Web code, and
           in particular to expose native APIs to the Web content, making it possible for the Web content to make native
           calls.</li>
-        <li><dfn data-lt="State sharing|Share state">State sharing</dfn>: Whether the WebView shares state such as
-          cookies and cache with the [=system-wide web browser=], or is completely isolated.</li>
+        <li><dfn data-lt="State sharing|Share state">State sharing</dfn>: Whether the WebView shares state, such as
+          cookies and cache, with the [=system-wide web browser=] or is completely isolated.</li>
       </ul>
       </p>
       <p>However, in practice, [=WebViews=] are classified into one of two categories with fixed properties:</p>
@@ -215,23 +215,23 @@
       <dt><dfn>Hybrid apps</dfn></dt>
       <dd>
         <p>[=Hybrid apps=] combine elements of [=native applications=] and [=web applications=].</p>
-        <p>[=Web applications=] wrapped in a native container are an example of an [=hybrid app=]. This provides
+        <p>[=Web applications=] wrapped in a native container are an example of a [=hybrid app=]. This provides
           developers with a cross-platform mechanism to build a [=native application=]. When [=fully-fledged=] WebViews
           are used, the ability to [=access the web content=] may be leveraged to add native-like capabilities to the
           WebView.</p>
-        <p>Another example is In-App Browsers (IABs), which is a pattern for browsing links to web pages within a native
+        <p>Another example is in-app browsers (IABs), which are a pattern for browsing links to web pages within a native
           application without leaving the application.</p>
       </dd>
       <dt>Browsers</dt>
       <dd>WebViews may be used to build browsers since they provide the capabilities of a rendering engine. When done
-        with [=fully-fledged=] WebViews, these browsers can provide more customizable experiences (e.g. privacy-focused
+        with [=fully-fledged=] WebViews, these browsers can provide more customizable experiences (e.g., privacy-focused
         browsers) by modifying the web content.</dd>
       <dt>Mini apps & super apps</dt>
       <dd>
         <p>WebViews may be used to render the web content of a [=MiniApp=] page.</p>
-        <p>Features that are not supported by the WebView, or that run with limited performance (such as maps, videos,
-          etc.), are typically replaced by native components that take care of the rendering.</p>
-        <p>For these reasons, [=fully-fledged=] WebViews are used in the [=MiniApp=] ecosystem, to allow for [=UX
+        <p>Features that are not supported by the WebView or that run with limited performance (such as maps, videos,
+          etc.) are typically replaced by native components that take care of the rendering.</p>
+        <p>For these reasons, [=fully-fledged=] WebViews are used in the [=MiniApp=] ecosystem to allow for [=UX
           flexibility=] and [=access to the web content=].</p>
       </dd>
     </dl>
@@ -270,7 +270,7 @@
 
         <dt>Motivation</dt>
         <dd>
-          It is quite common to use WebView in [=native app=] development, due to WebView’s benefit of cross-platform
+          It is quite common to use WebView in [=native app=] development due to WebView’s benefit of cross-platform
           interoperability. But the page loading performance of WebView cannot satisfy [=native app=] well, which means the
           loading of a WebView page is quite slower than loading a native page.
           <br>
@@ -336,7 +336,7 @@
         <dt>How is the issue solved in the Browser, and what’s more is needed?</dt>
         <dd>
           <ul>
-            <li>In the Browser: Prefetch, Preload and Next are used to pre-request resources (e.g. HTML, CSS,
+            <li>In the Browser: Prefetch, Preload and Next are used to pre-request resources (e.g., HTML, CSS,
               JavaScript, Img, etc.), but they are not supported or only partly supported by WebView.</li>
             <li>What’s more: how to pre-request the data (JSON, XML, etc.)
               <br>
@@ -529,10 +529,10 @@
         <dd>
           User scripts (aka content scripts) is a powerful tool that unlocks many possibilities such as:
           <ul>
-            <li>content customization (e.g. applying custom CSS, adding UI elements)</li>
-            <li>security and privacy protection (e.g. blocking harmful APIs, preventing data leakage and fingerprinting)
+            <li>content customization (e.g., applying custom CSS, adding UI elements)</li>
+            <li>security and privacy protection (e.g., blocking harmful APIs, preventing data leakage and fingerprinting)
             </li>
-            <li>enriching web app functionality (e.g. filling previously saved passwords, translating text to foreign
+            <li>enriching web app functionality (e.g., filling previously saved passwords, translating text to foreign
               language, polyfilling missing APIs)</li>
           </ul>
           Injected scripts can also be a workaround when another WebView feature is not available: for example, due to
@@ -617,7 +617,7 @@
                   href="https://github.com/duckduckgo/content-scope-scripts/blob/main/src/features/cookie.js">deliberately
                   changes</a> the `document.cookie` API to protect against long-lived tracking cookies. However, there
                 is currently no (straightforward) way to do this in Workers, which have access to powerful APIs as well
-                (e.g. <a href="https://developer.mozilla.org/en-US/docs/Web/API/Cookie_Store_API">Cookie Store API</a>)
+                (e.g., <a href="https://developer.mozilla.org/en-US/docs/Web/API/Cookie_Store_API">Cookie Store API</a>)
                 <br>
                 This is currently not possible on any platform
               </li>
@@ -675,7 +675,7 @@
         <dd>
           <ul>
             <li>WebView vendors (Google, Microsoft, Apple)</li>
-            <li>Browser vendors (e.g. DuckDuckGo)</li>
+            <li>Browser vendors (e.g., DuckDuckGo)</li>
           </ul>
         </dd>
 
