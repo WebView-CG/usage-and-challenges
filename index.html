@@ -9,7 +9,12 @@
     // All config options at https://respec.org/docs/
     var respecConfig = {
       specStatus: "CG-DRAFT",
-      editors: [{
+      latestVersion: null, // Hides the "Latest published version" link
+      editors: [
+        {name: "Niklas Merz", w3cid: "137830", company: "Apache Software Foundation", companyURL: "https://apache.org/"},
+        {name: " Martin Alvarez-Espinar", company: "Huawei", companyURL: "https://www.huawei.com/"}
+      ],
+      formerEditors: [{
         name: "Qing An",
         w3cid: "76701",
         company: "Alibaba",
@@ -19,6 +24,11 @@
         company: "Google",
         companyURL: "https://www.google.com/"
       }],
+      authors: [
+        {name: "Maxim Tsoy", company: "DuckDuckGo", companyURL: "https://duckduckgo.com/"},
+        {name: "John Riviello", company: "ByteDance", companyURL: "https://www.bytedance.com/"},
+        {name: "Jiasheng Wu", company: "ByteDance", companyURL: "https://www.bytedance.com/"}
+      ],
       github: "WebView-CG/usage-and-challenges",
       xref: ["miniapp-packaging"],
       group: "cg/webview",
